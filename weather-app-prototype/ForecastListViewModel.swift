@@ -12,7 +12,7 @@ import Foundation
 class ForecastListViewModel: ObservableObject {
     @Published var forecasts: ForecastViewModel?
     @Published var isLoading: Bool = false
-    @AppStorage("location") var location: String = ""
+    @AppStorage("location") var location: String = "Princeton"
     @AppStorage("system") var system: Int = 0 {
         didSet {
             forecasts?.system = system
@@ -30,7 +30,7 @@ class ForecastListViewModel: ObservableObject {
         let apiService = APIService.shared
         CLGeocoder().geocodeAddressString(location) { (placemarks, error) in
             if let error = error {
-                print(error.localizedDescription)
+                print("line33" + error.localizedDescription)
             }
             if let lat = placemarks?.first?.location?.coordinate.latitude,
                let lon = placemarks?.first?.location?.coordinate.longitude {
@@ -48,7 +48,7 @@ class ForecastListViewModel: ObservableObject {
                     case .failure(let apiError):
                         switch apiError {
                         case .error(let errorString):
-                            print(errorString)
+                            print("line51" + errorString)
                         }
                     }
                 }

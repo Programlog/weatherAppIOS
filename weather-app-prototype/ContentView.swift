@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var forecastListVM = ForecastListViewModel()
+    @StateObject var forecastListVM = ForecastListViewModel()
     
     var body: some View {
         if forecastListVM.isLoading {
@@ -25,6 +25,11 @@ struct ContentView: View {
                     .tabItem {
                         Image(systemName: "magnifyingglass.circle.fill")
                         Text("Search")
+                    }
+                SettingsView()
+                    .tabItem {
+                        Image(systemName: "gear")
+                        Text("Settings")
                     }
             }
             .font(.headline)

@@ -45,7 +45,7 @@ struct ForecastViewModel: View {
         }
     }
     
-    var day: String {
+    var date: String {
         return Self.dateFormatter.string(from: forecast.daily[0].dt)
     }
     
@@ -59,6 +59,14 @@ struct ForecastViewModel: View {
     
     var dailyLow: String {
         return "\(Self.numberFormatter.string(for: convert(forecast.daily[0].temp.min)) ?? "0")°"
+    }
+    
+    var dailyTemp: [String] {
+        var myList: [String] = []
+            for day in forecast.daily {
+                myList.append("\(Int(day.temp.day))")
+            }
+        return myList
     }
     
     var dailyPop: String {
@@ -83,8 +91,8 @@ struct ForecastViewModel: View {
         return "\(Self.numberFormatter.string(for: convert(forecast.current.temp)) ?? "0")°"
     }
     
-    var currentSystemImage: String {
-        switch forecast.current.weather[0].icon {
+    func  getSystemImage(icon: String) -> String {
+        switch icon {
         case "01d": return "sun.max.fill"
         case "02d": return "cloud.sun.fill"
         case "03d": return "cloud.fill"
@@ -107,6 +115,18 @@ struct ForecastViewModel: View {
         default: return "cloud.sun.fill"
         }
         
+    }
+    
+    var currentSystemImage: String {
+        return getSystemImage(icon: forecast.current.weather[0].icon)
+    }
+    
+    var dailySystemImages: [String] {
+        var myList: [String] = []
+        for day in forecast.daily {
+            myList.append(getSystemImage(icon: day.weather[0].icon))
+        }
+        return myList
     }
     
     var cityName: String {

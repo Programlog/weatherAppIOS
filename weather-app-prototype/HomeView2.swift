@@ -3,7 +3,7 @@ import SwiftUI
 struct HomeView2: View {
     @State private var isAnimating: Bool = false
     @AppStorage("isCurrentLocation") var isCurrentLocation: Bool = false
-    @StateObject private var forecastListVM = ForecastListViewModel()
+    @StateObject var forecastListVM = ForecastListViewModel()
 
     
     var body: some View {
@@ -16,7 +16,6 @@ struct HomeView2: View {
             
                 ScrollView(.vertical, showsIndicators: false) {
 //                    HStack {
-////                                                 button
 //                    }
                     
                     VStack {
@@ -27,18 +26,34 @@ struct HomeView2: View {
                         MainWeatherStatusView(systemIcon: forecastListVM.forecasts?.currentSystemImage ?? "sun.max.fill", temperature: forecastListVM.forecasts?.currentTemp ?? "--")
                             .opacity(isAnimating ? 1: 0.3)
                             .animation(.easeOut(duration: 1), value: isAnimating)
-                        VStack {
-                            Text(forecastListVM.forecasts?.currentTemp ?? "nil temp")
-                                .fontWeight(.bold)
-                                .padding()
+                        
+                        HStack(spacing:25) {
+                            WeatherDayView(dayOfWeek: "TUE",
+                                           imageName: forecastListVM.forecasts?.dailySystemImages[0] ?? "hourglass.bottomhalf.filled",
+                                           temperature: forecastListVM.forecasts?.dailyTemp[0] ?? "--")
                             
-                            Text("\(forecastListVM.forecasts?.forecast.lat ?? -1)")
-                            Text("\(forecastListVM.forecasts?.forecast.lon ?? -1)")
-
+                            
+                            WeatherDayView(dayOfWeek: "WED",
+                                           imageName: forecastListVM.forecasts?.dailySystemImages[1] ?? "hourglass.bottomhalf.filled",
+                                           temperature: forecastListVM.forecasts?.dailyTemp[1] ?? "--")
+                            
+                            WeatherDayView(dayOfWeek: "THU",
+                                           imageName: forecastListVM.forecasts?.dailySystemImages[2] ?? "hourglass.bottomhalf.filled",
+                                           temperature: forecastListVM.forecasts?.dailyTemp[2] ?? "--")
+                            
+                            WeatherDayView(dayOfWeek: "FRI",
+                                           imageName: forecastListVM.forecasts?.dailySystemImages[3] ?? "hourglass.bottomhalf.filled",
+                                           temperature: forecastListVM.forecasts?.dailyTemp[3] ?? "--")
+                            
+                            WeatherDayView(dayOfWeek: "SUN",
+                                           imageName: forecastListVM.forecasts?.dailySystemImages[4] ?? "hourglass.bottomhalf.filled",
+                                           temperature: forecastListVM.forecasts?.dailyTemp[4] ?? "--")
+                            
                         }
                     }
                 }.onAppear(perform: {
                     isAnimating = true
+                    forecastListVM.fetchData()
             })
         }
     }
@@ -172,4 +187,29 @@ struct MainWeatherStatusView: View {
 //    }
 //}
 //
+
+struct WeatherDayView: View {
+    var dayOfWeek: String
+    var imageName: String
+    var temperature: String
+    
+    var body: some View {
+        VStack {
+            Text(dayOfWeek)
+                .font(.system(size: 17, weight: .medium))
+                .foregroundColor(.white)
+            
+            Image(systemName: imageName)
+                .renderingMode(.original)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 45, height: 45)
+            
+            Text(temperature)
+                .font(.system(size: 28, weight: .medium))
+                .foregroundColor(.white)
+        }
+        .shadow(color: Color("ColorBlackTransparentLight"), radius: 5, x: 0, y: 2)
+    }
+}
 
