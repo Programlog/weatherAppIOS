@@ -64,7 +64,7 @@ struct ForecastViewModel: View {
     var dailyTemp: [String] {
         var myList: [String] = []
             for day in forecast.daily {
-                myList.append("\(Int(day.temp.day))")
+                myList.append("\(Int(convert(day.temp.day)))")
             }
         return myList
     }

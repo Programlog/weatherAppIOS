@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SearchView: View {
     @State private var searchTerm = ""
-    @State private var showingPopOver: Bool = false
     var body: some View {
         NavigationView {
             VStack{
@@ -22,6 +21,7 @@ struct SearchView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .foregroundColor(.gray)
             .navigationTitle("Search")
+
         }
         .searchable(text: $searchTerm, prompt: "Enter a city...") {
 //            Text("🍎").searchCompletion("apple")

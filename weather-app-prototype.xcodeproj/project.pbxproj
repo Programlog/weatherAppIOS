@@ -22,6 +22,7 @@
 		C7324F9528A1ABCC00540D8A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7324F9428A1ABCC00540D8A /* SettingsView.swift */; };
 		C7324F9828A1ABEC00540D8A /* SettingsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7324F9728A1ABEC00540D8A /* SettingsRowView.swift */; };
 		C7324F9928A1ABEC00540D8A /* SettingsLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7324F9628A1ABEC00540D8A /* SettingsLabelView.swift */; };
+		C7324F9C28A1B96600540D8A /* HalfASheet in Frameworks */ = {isa = PBXBuildFile; productRef = C7324F9B28A1B96600540D8A /* HalfASheet */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7324F9C28A1B96600540D8A /* HalfASheet in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,6 +122,9 @@
 			dependencies = (
 			);
 			name = "weather-app-prototype";
+			packageProductDependencies = (
+				C7324F9B28A1B96600540D8A /* HalfASheet */,
+			);
 			productName = "weather-app-prototype";
 			productReference = 9F3E214A2894C64C0038733F /* weather-app-prototype.app */;
 			productType = "com.apple.product-type.application";
@@ -148,6 +153,9 @@
 				Base,
 			);
 			mainGroup = 9F3E21412894C64C0038733F;
+			packageReferences = (
+				C7324F9A28A1B96600540D8A /* XCRemoteSwiftPackageReference "HalfASheet" */,
+			);
 			productRefGroup = 9F3E214B2894C64C0038733F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -399,6 +407,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C7324F9A28A1B96600540D8A /* XCRemoteSwiftPackageReference "HalfASheet" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/franklynw/HalfASheet";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C7324F9B28A1B96600540D8A /* HalfASheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C7324F9A28A1B96600540D8A /* XCRemoteSwiftPackageReference "HalfASheet" */;
+			productName = HalfASheet;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9F3E21422894C64C0038733F /* Project object */;
 }

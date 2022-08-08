@@ -1,9 +1,13 @@
 import SwiftUI
+import HalfASheet
 
 struct HomeView2: View {
     @State private var isAnimating: Bool = false
     @AppStorage("isCurrentLocation") var isCurrentLocation: Bool = false
     @StateObject var forecastListVM = ForecastListViewModel()
+    @State var isBottomSheet: Bool = false
+
+    @State private var amount = 0.0
 
     
     var body: some View {
@@ -30,31 +34,42 @@ struct HomeView2: View {
                         HStack(spacing:25) {
                             WeatherDayView(dayOfWeek: "TUE",
                                            imageName: forecastListVM.forecasts?.dailySystemImages[0] ?? "hourglass.bottomhalf.filled",
-                                           temperature: forecastListVM.forecasts?.dailyTemp[0] ?? "--")
+                                           temperature: forecastListVM.forecasts?.dailyTemp[0] ?? "--", forecast: forecastListVM, isBottomSheet: $isBottomSheet)
                             
                             
                             WeatherDayView(dayOfWeek: "WED",
                                            imageName: forecastListVM.forecasts?.dailySystemImages[1] ?? "hourglass.bottomhalf.filled",
-                                           temperature: forecastListVM.forecasts?.dailyTemp[1] ?? "--")
+                                           temperature: forecastListVM.forecasts?.dailyTemp[1] ?? "--", forecast: forecastListVM, isBottomSheet: $isBottomSheet)
                             
                             WeatherDayView(dayOfWeek: "THU",
                                            imageName: forecastListVM.forecasts?.dailySystemImages[2] ?? "hourglass.bottomhalf.filled",
-                                           temperature: forecastListVM.forecasts?.dailyTemp[2] ?? "--")
+                                           temperature: forecastListVM.forecasts?.dailyTemp[2] ?? "--", forecast: forecastListVM, isBottomSheet: $isBottomSheet)
                             
                             WeatherDayView(dayOfWeek: "FRI",
                                            imageName: forecastListVM.forecasts?.dailySystemImages[3] ?? "hourglass.bottomhalf.filled",
-                                           temperature: forecastListVM.forecasts?.dailyTemp[3] ?? "--")
+                                           temperature: forecastListVM.forecasts?.dailyTemp[3] ?? "--", forecast: forecastListVM, isBottomSheet: $isBottomSheet)
                             
                             WeatherDayView(dayOfWeek: "SUN",
                                            imageName: forecastListVM.forecasts?.dailySystemImages[4] ?? "hourglass.bottomhalf.filled",
-                                           temperature: forecastListVM.forecasts?.dailyTemp[4] ?? "--")
+                                           temperature: forecastListVM.forecasts?.dailyTemp[4] ?? "--", forecast: forecastListVM, isBottomSheet: $isBottomSheet)
                             
                         }
                     }
                 }.onAppear(perform: {
                     isAnimating = true
                     forecastListVM.fetchData()
-            })
+                })
+                .halfASheet(isPresented: $isBottomSheet) {
+                    VStack {
+                        Image(systemName: "sun.max.fill")
+                            .resizable()
+                            .scaleEffect()
+                            .frame(width: 80, height: 80, alignment: .center)
+                        .foregroundColor(.red)
+                        Text("bottom sheet")
+                    }
+                }
+
         }
     }
     func getColors(description: String) -> [Color] {
@@ -192,22 +207,43 @@ struct WeatherDayView: View {
     var dayOfWeek: String
     var imageName: String
     var temperature: String
+    var forecast: ForecastListViewModel
+    @Binding var isBottomSheet: Bool
     
     var body: some View {
         VStack {
             Text(dayOfWeek)
                 .font(.system(size: 17, weight: .medium))
                 .foregroundColor(.white)
-            
-            Image(systemName: imageName)
-                .renderingMode(.original)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 45, height: 45)
+            Button {
+                isBottomSheet.toggle()
+            } label: {
+                Image(systemName: imageName)
+                    .renderingMode(.original)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 45, height: 45)
+            }
+
             
             Text(temperature)
                 .font(.system(size: 28, weight: .medium))
                 .foregroundColor(.white)
+            
+            
+//            VStack {
+//                LinearGradient(gradient: Gradient(colors: [.blue, .gray]), startPoint: .topLeading, endPoint: .bottomTrailing)
+//                    .edgesIgnoringSafeArea(.all)
+//                Image(systemName: imageName)
+//                    .renderingMode(.original)
+//                    .resizable()
+//                    .aspectRatio(contentMode: .fit)
+//                    .frame(width: 80, height: 80)
+//                HStack {
+//                    Text("H: \(forecast.forecasts?.dailyHigh ?? "--")")
+//                    Text("L: \(forecast.forecasts?.dailyLow ?? "--")")
+//                }
+//            }
         }
         .shadow(color: Color("ColorBlackTransparentLight"), radius: 5, x: 0, y: 2)
     }
