@@ -33,8 +33,8 @@ struct ContentView: View {
                             Text("Settings")
                         }
                 }
+                .preferredColorScheme(.dark)
                 .font(.headline)
-                .tint(Color.primary)
             
         }
 //        ZStack {
