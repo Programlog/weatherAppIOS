@@ -19,12 +19,21 @@ struct Forecast: Codable {
             let main: String
             let icon: String
         }
+        struct FeelsLike: Codable {
+            let day: Double
+        }
         
         let temp: Temp
         let weather: [Weather]
         let pop: Double
+        let uvi: Double
         let dt: Date
         let humidity: Int
+        let wind_deg: Int
+        let wind_gust: Double
+        let sunrise: Int
+        let sunset: Int
+        let feels_like: FeelsLike
     }
     
     struct Current: Codable {
@@ -41,7 +50,7 @@ struct Forecast: Codable {
         let humidity: Int
         let uvi: Double
         let wind_speed: Double
-        let wind_deg: Double
+        let wind_deg: Int
         let weather: [Weather]
     }
     

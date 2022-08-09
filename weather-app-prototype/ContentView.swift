@@ -8,7 +8,9 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject var forecastListVM = ForecastListViewModel()
-    
+    init() {
+        UITabBar.appearance().barTintColor = UIColor.black
+    }
     var body: some View {
         if forecastListVM.isLoading {
             ProgressView()
@@ -32,8 +34,9 @@ struct ContentView: View {
                             Image(systemName: "gear")
                             Text("Settings")
                         }
+                        .preferredColorScheme(.dark)
                 }
-                .preferredColorScheme(.dark)
+//                .preferredColorScheme(.dark)
                 .font(.headline)
             
         }
@@ -69,41 +72,6 @@ struct ContentView: View {
 //                    .pickerStyle(SegmentedPickerStyle())
 //                    .frame(width: 200, height: 50, alignment: .center)
 //                    .padding()
-////                    List(forecastListVM.forecasts?.forecast.daily ?? nil, id: \.forecastListVM.forecasts?.forecast.daily.weather.id) { day in
-////                            VStack(alignment:.leading) {
-////                                Text(day.pop)
-////                                    .fontWeight(.bold)
-////                                HStack(alignment:.top) {
-////                                    Image(systemName: "hourglass")
-////                                        .font(.title)
-////                                        .frame(width: 40, height: 40)
-////                                        .background(RoundedRectangle(cornerRadius: 10).fill(.blue))
-////                                    VStack(alignment:.leading) {
-////                                        Text(day.dailyMain)
-////                                        HStack {
-////                                            Text("Temp: ")
-////                                            Text("Max: \(day.temp.max)")
-////                                            Text("Min: \(day.temp.min)")
-////                                            Text("current Avg: \(day.currentTemp)")
-////                                        }
-////
-//////                                        HStack {
-//////                                            Text("Chance of rain: \(day.dailyPop)%")
-//////                                            Text("Current Humidity: \(day.currentHumidity)%")
-//////                                            Text("Sunrise: \(day.currentSunrise)")
-//////                                        }
-////
-////                                    }
-////                                }
-////                            }
-////                        }
-////                        .listStyle(PlainListStyle())
-//                }
-//                .padding(.horizontal)
-//                .navigationTitle("Weather app")
-//
-//            }
-//        }
             
     }
 }

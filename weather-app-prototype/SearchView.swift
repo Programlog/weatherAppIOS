@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SearchView: View {
     @State private var searchTerm = ""
+    @StateObject var forecastListVM = ForecastListViewModel()
+
     var body: some View {
         NavigationView {
             VStack{
@@ -16,6 +18,10 @@ struct SearchView: View {
                     .font(.title.weight(.bold))
                 Text("Start searching for a city")
                     .multilineTextAlignment(.center)
+                
+                Button("Search") {
+                    forecastListVM.fetchData()
+                }
             }
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -23,7 +29,7 @@ struct SearchView: View {
             .navigationTitle("Search")
 
         }
-        .searchable(text: $searchTerm, prompt: "Enter a city...") {
+        .searchable(text: forecastListVM.$location, prompt: "Enter a city...") {
 //            Text("🍎").searchCompletion("apple")
 //            Text("🍐").searchCompletion("Pear")
 //            Text("🍌").searchCompletion("banana")
