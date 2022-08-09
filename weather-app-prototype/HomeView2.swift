@@ -1,5 +1,7 @@
 import SwiftUI
 import HalfASheet
+import PartialSheet
+import PartialSheet
 
 struct HomeView2: View {
     @State private var isAnimating: Bool = false
@@ -53,66 +55,18 @@ struct HomeView2: View {
                             
                         }
                         
-                        currentHalfASheetView(title: "Current", dataSet: forecastListVM.forecasts?.Current ?? ["", "", "", "", "", ""], isBottomSheet: $isBottomSheet)
+//                        currentHalfASheetView(title: "Current", dataSet: forecastListVM.forecasts?.Current ?? ["", "", "", "", "", ""], isBottomSheet: $isBottomSheet)
                     }
                 }.onAppear(perform: {
                     isAnimating = true
                     forecastListVM.fetchData()
                 })
-//                .halfASheet(isPresented: $isBottomSheet) {
-//                    VStack {
-//                        HStack {
-//                            Text("Current")
-//                                .fontWeight(.bold)
-//                                .font(.title)
-//                                .padding(.horizontal, 25)
-//                            Image(systemName: forecastListVM.forecasts?.currentSystemImage ?? "hourglass.bottomhalf.filled")
-//                                .resizable()
-//                                .scaledToFit()
-//                                .frame(width: 80, height: 80, alignment: .center)
-//                                .tint(.primary)
-//                        }
-//                        List {
-//                            HStack {
-//                                Image(systemName: "thermometer")
-//                                Text("Temperature")
-//                                Spacer()
-//                                Text(forecastListVM.forecasts?.currentTemp ?? "--°")
-//                            }
-//
-//
-//                            HStack {
-//                                Image(systemName: "sunrise.fill")
-//                                Text("Sunrise")
-//                                Spacer()
-//                                Text(forecastListVM.forecasts?.currentSunrise ?? "-:-- AM")
-//                            }
-//                            HStack {
-//                                Image(systemName: "sunset.fill")
-//                                Text("Sunset")
-//                                Spacer()
-//                                Text(forecastListVM.forecasts?.currentSunrise ?? "-:-- PM")
-//                            }
-//                            HStack {
-//                                Image(systemName: "humidity.fill")
-//                                Text("Humidity")
-//                                Spacer()
-//                                Text(forecastListVM.forecasts?.currentHumidity ?? "-- %")
-//                            }
-//                            HStack {
-//                                Image(systemName: "wind")
-//                                Text("Wind")
-//                                Spacer()
-//                                Text((forecastListVM.forecasts?.currentWindSpeed ?? "-- mph") + " " + (forecastListVM.forecasts?.currentWinDir ?? "NE"))
-//                            }
-//                        }
-////                        .colorMultiply(.green)
-//
-//
-//                    }
-//                }
+                .partialSheet(isPresented: $isBottomSheet) {
+                    currentHalfASheetView(title: "Current", dataSet: forecastListVM.forecasts?.Current ?? ["", "", "", "", "", ""], isBottomSheet: $isBottomSheet)
+                    
+                 }
 
-        }
+        }.attachPartialSheetToRoot()
     }
     func getColors(description: String) -> [Color] {
             if description == "03d" || description == "04d" || description == "50d" || description == "50n" || description == "03n" || description == "04n" || description == "13d" || description == "13n"{
@@ -339,18 +293,19 @@ struct currentHalfASheetView: View {
     private let dataPoints: [String] = ["Feels Like",  "Humidity", "Wind", "Sunrise", "Sunset", "UV Index"]
 
     var body: some View {
-        HalfASheet(isPresented: $isBottomSheet) {
             VStack {
                 HStack {
                     Text(title)
                         .fontWeight(.bold)
                         .font(.title)
-                        .padding(.horizontal, 25)
+                        .padding(.horizontal, 30)
+                    Spacer()
                     Image(systemName: dataSet[7])
                         .resizable()
                         .scaledToFit()
                         .frame(width: 80, height: 80, alignment: .center)
                         .tint(.primary)
+                        .padding(.horizontal, 40)
                 }
                 VStack(spacing: 20) {
                     ForEach(0..<dataPoints.count, id: \.self) { i in
@@ -358,10 +313,8 @@ struct currentHalfASheetView: View {
                         Divider()
                     }
                 }
-                Spacer(minLength: 200)
+//                Spacer(minLength: 210)
             }
             
-        }
-        .contentInsets(EdgeInsets(top: 5, leading: 20, bottom: 60, trailing: 25))
     }
 }

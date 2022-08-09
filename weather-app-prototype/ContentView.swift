@@ -15,25 +15,27 @@ struct ContentView: View {
                 .progressViewStyle(CircularProgressViewStyle(tint: .blue))
                 .fullScreenCover(isPresented: $forecastListVM.isLoading, content: ProgressView.init)
         } else {
-            TabView {
-                HomeView2()
-                    .tabItem {
-                        Image(systemName: "house")
-                        Text("Home")
-                    }
-                SearchView()
-                    .tabItem {
-                        Image(systemName: "magnifyingglass.circle.fill")
-                        Text("Search")
-                    }
-                SettingsView()
-                    .tabItem {
-                        Image(systemName: "gear")
-                        Text("Settings")
-                    }
-            }
-            .font(.headline)
-            .tint(Color.primary)
+                TabView {
+                    HomeView2()
+                        .tabItem {
+                            Image(systemName: "house")
+                            Text("Home")
+                            
+                        }
+                    SearchView()
+                        .tabItem {
+                            Image(systemName: "magnifyingglass.circle.fill")
+                            Text("Search")
+                        }
+                    SettingsView()
+                        .tabItem {
+                            Image(systemName: "gear")
+                            Text("Settings")
+                        }
+                }
+                .font(.headline)
+                .tint(Color.primary)
+            
         }
 //        ZStack {
 //            NavigationView {
@@ -112,7 +114,3 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-
-struct myData {
-    var data: Forecast
-}

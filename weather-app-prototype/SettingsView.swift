@@ -10,7 +10,6 @@ import SwiftUI
 struct SettingsView: View {
     @AppStorage("isOnboarding") var isOnboarding: Bool = false
     @AppStorage("isForceDarkMode") var isforceDarkMode: Bool = false
-//    @AppStorage("selection") var selection: String = "Fahrenheit"
     @StateObject var forecastListVM = ForecastListViewModel()
     
     var body: some View {
@@ -56,12 +55,14 @@ struct SettingsView: View {
                             }
                             .padding()
                             .background(
-                                Color(UIColor.tertiarySystemBackground).clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-                            )
+                                Color(UIColor.tertiarySystemBackground).clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous)))
+                            .tint(.blue)
                             Divider()
                             Toggle(isOn: $isforceDarkMode) {
                                 Text("Force Dark mode")
-                            }.padding(.top, 6)
+                            }
+                            .padding(.top, 6)
+                            .tint(.blue)
                             Divider()
                             HStack {
                                 Text("Units")

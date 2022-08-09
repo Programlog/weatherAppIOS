@@ -15,16 +15,17 @@ struct WeatherInfoRows: View {
         HStack {
             Group {
                 Image(systemName: systemImage)
-                    .frame(width: 50, alignment: .center)
+                    .frame(width: 60, alignment: .center)
                     .shadow(color: Color("ColorBlackTransparentLight"), radius: 4, x: 0, y: 2)
                 Text(property)
             }
             .foregroundColor(.blue)
             .font(Font.system(.body).bold())
             
-            Spacer(minLength: 25)
+            Spacer()
             Text(value)
                 .multilineTextAlignment(.trailing)
+                .padding(.horizontal, 20)
 
         }
     }

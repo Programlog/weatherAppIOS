@@ -22,8 +22,8 @@
 		C7324F9528A1ABCC00540D8A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7324F9428A1ABCC00540D8A /* SettingsView.swift */; };
 		C7324F9828A1ABEC00540D8A /* SettingsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7324F9728A1ABEC00540D8A /* SettingsRowView.swift */; };
 		C7324F9928A1ABEC00540D8A /* SettingsLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7324F9628A1ABEC00540D8A /* SettingsLabelView.swift */; };
-		C7324F9C28A1B96600540D8A /* HalfASheet in Frameworks */ = {isa = PBXBuildFile; productRef = C7324F9B28A1B96600540D8A /* HalfASheet */; };
 		C7324F9E28A201DC00540D8A /* WeatherInfoRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7324F9D28A201DC00540D8A /* WeatherInfoRows.swift */; };
+		C7324FA128A2143B00540D8A /* PartialSheet in Frameworks */ = {isa = PBXBuildFile; productRef = C7324FA028A2143B00540D8A /* PartialSheet */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,7 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7324F9C28A1B96600540D8A /* HalfASheet in Frameworks */,
+				C7324FA128A2143B00540D8A /* PartialSheet in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,7 +126,7 @@
 			);
 			name = "weather-app-prototype";
 			packageProductDependencies = (
-				C7324F9B28A1B96600540D8A /* HalfASheet */,
+				C7324FA028A2143B00540D8A /* PartialSheet */,
 			);
 			productName = "weather-app-prototype";
 			productReference = 9F3E214A2894C64C0038733F /* weather-app-prototype.app */;
@@ -157,7 +157,7 @@
 			);
 			mainGroup = 9F3E21412894C64C0038733F;
 			packageReferences = (
-				C7324F9A28A1B96600540D8A /* XCRemoteSwiftPackageReference "HalfASheet" */,
+				C7324F9F28A2143B00540D8A /* XCRemoteSwiftPackageReference "PartialSheet" */,
 			);
 			productRefGroup = 9F3E214B2894C64C0038733F /* Products */;
 			projectDirPath = "";
@@ -329,7 +329,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"weather-app-prototype/Preview Content\"";
-				DEVELOPMENT_TEAM = CMP3YVA6GT;
+				DEVELOPMENT_TEAM = TF6BAJ34LA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "weather-app-prototype/Info.plist";
@@ -347,7 +347,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "co.programexplorer.weather-app-prototype";
+				PRODUCT_BUNDLE_IDENTIFIER = "niri-b.weather-app-prototype";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -363,7 +363,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"weather-app-prototype/Preview Content\"";
-				DEVELOPMENT_TEAM = CMP3YVA6GT;
+				DEVELOPMENT_TEAM = TF6BAJ34LA;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "weather-app-prototype/Info.plist";
@@ -381,7 +381,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "co.programexplorer.weather-app-prototype";
+				PRODUCT_BUNDLE_IDENTIFIER = "niri-b.weather-app-prototype";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -413,21 +413,21 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		C7324F9A28A1B96600540D8A /* XCRemoteSwiftPackageReference "HalfASheet" */ = {
+		C7324F9F28A2143B00540D8A /* XCRemoteSwiftPackageReference "PartialSheet" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/franklynw/HalfASheet";
+			repositoryURL = "https://github.com/AndreaMiotto/PartialSheet";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				minimumVersion = 3.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C7324F9B28A1B96600540D8A /* HalfASheet */ = {
+		C7324FA028A2143B00540D8A /* PartialSheet */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C7324F9A28A1B96600540D8A /* XCRemoteSwiftPackageReference "HalfASheet" */;
-			productName = HalfASheet;
+			package = C7324F9F28A2143B00540D8A /* XCRemoteSwiftPackageReference "PartialSheet" */;
+			productName = PartialSheet;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
