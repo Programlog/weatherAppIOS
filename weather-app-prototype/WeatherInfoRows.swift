@@ -1,0 +1,39 @@
+//
+//  WeatherInfoRows.swift
+//  weather-app-prototype
+//
+//  Created by Niranjan Bukkapatna on 8/8/22.
+//
+
+import SwiftUI
+
+struct WeatherInfoRows: View {
+    var systemImage: String
+    var property: String
+    var value: String
+    var body: some View {
+        HStack {
+            Group {
+                Image(systemName: systemImage)
+                    .frame(width: 50, alignment: .center)
+                    .shadow(color: Color("ColorBlackTransparentLight"), radius: 4, x: 0, y: 2)
+                Text(property)
+            }
+            .foregroundColor(.blue)
+            .font(Font.system(.body).bold())
+            
+            Spacer(minLength: 25)
+            Text(value)
+                .multilineTextAlignment(.trailing)
+
+        }
+    }
+}
+
+struct WeatherInfoRows_Previews: PreviewProvider {
+    static var previews: some View {
+        WeatherInfoRows(systemImage: "thermometer", property: "Temperature", value: "99°")
+            .previewLayout(.sizeThatFits)
+            .padding()
+    }
+}

@@ -33,6 +33,7 @@ struct ContentView: View {
                     }
             }
             .font(.headline)
+            .tint(Color.primary)
         }
 //        ZStack {
 //            NavigationView {

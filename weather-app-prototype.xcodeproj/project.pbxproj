@@ -23,6 +23,7 @@
 		C7324F9828A1ABEC00540D8A /* SettingsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7324F9728A1ABEC00540D8A /* SettingsRowView.swift */; };
 		C7324F9928A1ABEC00540D8A /* SettingsLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7324F9628A1ABEC00540D8A /* SettingsLabelView.swift */; };
 		C7324F9C28A1B96600540D8A /* HalfASheet in Frameworks */ = {isa = PBXBuildFile; productRef = C7324F9B28A1B96600540D8A /* HalfASheet */; };
+		C7324F9E28A201DC00540D8A /* WeatherInfoRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7324F9D28A201DC00540D8A /* WeatherInfoRows.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		C7324F9428A1ABCC00540D8A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		C7324F9628A1ABEC00540D8A /* SettingsLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLabelView.swift; sourceTree = "<group>"; };
 		C7324F9728A1ABEC00540D8A /* SettingsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRowView.swift; sourceTree = "<group>"; };
+		C7324F9D28A201DC00540D8A /* WeatherInfoRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherInfoRows.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,7 @@
 				9FF48C92289F269D004148B0 /* ForecastListViewModel.swift */,
 				9FF48C8A289EFBC1004148B0 /* Forecast.swift */,
 				9F1F9F0D28A0AC110072921A /* HomeView2.swift */,
+				C7324F9D28A201DC00540D8A /* WeatherInfoRows.swift */,
 				9F1F9F0F28A0B4E00072921A /* SearchView.swift */,
 				9FF48C8C289EFE54004148B0 /* APIService.swift */,
 				9F8D914828A1832F007332EB /* us_cities.csv */,
@@ -195,6 +198,7 @@
 				9F3E214E2894C64C0038733F /* weather_app_prototypeApp.swift in Sources */,
 				C7324F9928A1ABEC00540D8A /* SettingsLabelView.swift in Sources */,
 				9FF48C93289F269D004148B0 /* ForecastListViewModel.swift in Sources */,
+				C7324F9E28A201DC00540D8A /* WeatherInfoRows.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

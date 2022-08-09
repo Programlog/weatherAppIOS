@@ -40,6 +40,8 @@ struct Forecast: Codable {
         let feels_like: Double
         let humidity: Int
         let uvi: Double
+        let wind_speed: Double
+        let wind_deg: Double
         let weather: [Weather]
     }
     

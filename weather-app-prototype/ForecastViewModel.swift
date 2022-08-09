@@ -19,11 +19,11 @@ struct ForecastViewModel: View {
         return dateFormatter
     }
     
-    private static var dateFormatter2: DateFormatter {
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
-        return dateFormatter
-    }
+//    private static var dateFormatter2: DateFormatter {
+//        let dateFormatter = NSDate()
+//        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+//        return dateFormatter
+//    }
     
     private static var numberFormatter: NumberFormatter {
         let numberFormatter = NumberFormatter()
@@ -44,6 +44,33 @@ struct ForecastViewModel: View {
             return (temp - 32) * 5/9
         }
     }
+    
+    func  getSystemImage(icon: String) -> String {
+        switch icon {
+        case "01d": return "sun.max.fill"
+        case "02d": return "cloud.sun.fill"
+        case "03d": return "cloud.fill"
+        case "04d": return "cloud.fill"
+        case "09d": return "cloud.rain.fill"
+        case "10d": return "cloud.sun.rain.fill"
+        case "11d": return "cloud.bolt.rain.fill"
+        case "13d": return "cloud.snow.fill"
+        case "50d": return "cloud.fog.fill"
+        
+        case "01n": return "moon.fill"
+        case "02n": return "cloud.moon.fill"
+        case "03n": return "cloud.fill"
+        case "04n": return "cloud.fill"
+        case "09n": return "cloud.rain.fill"
+        case "10n": return "cloud.moon.rain.fill"
+        case "11n": return "cloud.bolt.rain.fill"
+        case "13n": return "cloud.snow.fill"
+        case "50n": return "cloud.fog.fill"
+        default: return "cloud.sun.fill"
+        }
+        
+    }
+
     
     var date: String {
         return Self.dateFormatter.string(from: forecast.daily[0].dt)
@@ -77,56 +104,49 @@ struct ForecastViewModel: View {
         return "\(forecast.current.humidity)%"
     }
     
-    var sunrise: String {
-        let date = Date(timeIntervalSince1970: TimeInterval(forecast.current.sunrise))
-        return Self.dateFormatter2.string(from: date)
-    }
-    
-    var sunset: String {
-        let date = Date(timeIntervalSince1970: TimeInterval(forecast.current.sunset))
-        return Self.dateFormatter2.string(from: date)
-    }
-    
-    var currentTemp: String {
-        return "\(Self.numberFormatter.string(for: convert(forecast.current.temp)) ?? "0")°"
-    }
-    
-    func  getSystemImage(icon: String) -> String {
-        switch icon {
-        case "01d": return "sun.max.fill"
-        case "02d": return "cloud.sun.fill"
-        case "03d": return "cloud.fill"
-        case "04d": return "cloud.fill"
-        case "09d": return "cloud.rain.fill"
-        case "10d": return "cloud.sun.rain.fill"
-        case "11d": return "cloud.bolt.rain.fill"
-        case "13d": return "cloud.snow.fill"
-        case "50d": return "cloud.fog.fill"
-        
-        case "01n": return "moon.fill"
-        case "02n": return "cloud.moon.fill"
-        case "03n": return "cloud.fill"
-        case "04n": return "cloud.fill"
-        case "09n": return "cloud.rain.fill"
-        case "10n": return "cloud.moon.rain.fill"
-        case "11n": return "cloud.bolt.rain.fill"
-        case "13n": return "cloud.snow.fill"
-        case "50n": return "cloud.fog.fill"
-        default: return "cloud.sun.fill"
-        }
-        
-    }
-    
-    var currentSystemImage: String {
-        return getSystemImage(icon: forecast.current.weather[0].icon)
-    }
-    
     var dailySystemImages: [String] {
         var myList: [String] = []
         for day in forecast.daily {
             myList.append(getSystemImage(icon: day.weather[0].icon))
         }
         return myList
+    }
+    
+    var Daily: [String] {
+        return [dailyMain, dailyHigh, dailyLow, dailyPop]
+    }
+    
+    
+    var currentSunrise: String {
+        let date = NSDate(timeIntervalSince1970: TimeInterval(forecast.current.sunrise+forecast.timezone_offset))
+        let dayTimePeriodFormatter = DateFormatter()
+        dayTimePeriodFormatter.dateFormat = "h:mm a"
+        dayTimePeriodFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        let dateString = dayTimePeriodFormatter.string(from: date as Date)
+        
+        return dateString
+    }
+    
+    var currentSunset: String {
+        let date = NSDate(timeIntervalSince1970: TimeInterval(forecast.current.sunset+forecast.timezone_offset))
+        let dayTimePeriodFormatter = DateFormatter()
+        dayTimePeriodFormatter.dateFormat = "h:mm a"
+        dayTimePeriodFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        let dateString = dayTimePeriodFormatter.string(from: date as Date)
+        
+        return dateString
+    }
+    
+    var currentTemp: String {
+        return "\(Self.numberFormatter.string(for: convert(forecast.current.temp)) ?? "0")°"
+    }
+    
+    var currentFeelsLikeTemp: String {
+        return "\(Self.numberFormatter.string(for: convert(forecast.current.feels_like)) ?? "0")°"
+    }
+        
+    var currentSystemImage: String {
+        return getSystemImage(icon: forecast.current.weather[0].icon)
     }
     
     var cityName: String {
@@ -144,14 +164,33 @@ struct ForecastViewModel: View {
 
     }
     
+    var currentWindSpeed: String {
+        return "\(Int(forecast.current.wind_speed))"
+    }
+    
+    var currentWinDir: String {
+        let de = Int(forecast.current.wind_deg)
+        if 45 > de && de>=0 {return "NE"}
+        else if 90 > de && de >= 45 {return "E"}
+        else if 135 > de && de >= 90 {return "SE"}
+        else if 180 > de && de >= 135 {return "S"}
+        else if 225 > de && de >= 180 {return "SW"}
+        else if 270 > de && de >= 225 {return "W"}
+        else if 315 > de && de >= 270 {return "NW"}
+        else {
+            return "N"
+        }
+    }
+    
+    var currentUv: String {
+        return "\(Int(forecast.current.uvi))"
+    }
+    
+    var Current: [String] {
+        return [currentTemp, currentFeelsLikeTemp, currentHumidity, currentWindSpeed + " " + currentWinDir, currentSunrise, currentSunset, currentUv, currentSystemImage]
+    }
 
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
-
-//struct ForecastViewModel_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ForecastViewModel()
-//    }
-//}
