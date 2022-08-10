@@ -10,9 +10,17 @@ import CoreLocation
 import Foundation
 
 class ForecastListViewModel: ObservableObject {
+    struct AppError: Identifiable {
+        let id = UUID().uuidString
+        let errorString: String
+    }
     @Published var forecasts: ForecastViewModel?
+    @Published var appError: AppError? = nil
+//    var appError: AppError? = nil
+
     @Published var isLoading: Bool = false
-    @AppStorage("location") var location: String = "Princeton"
+    @AppStorage("location") var storageLocation: String = "Princeton"
+    @Published var location = ""
     @AppStorage("system") var system: Int = 0 {
         didSet {
             forecasts?.system = system
@@ -20,17 +28,32 @@ class ForecastListViewModel: ObservableObject {
     }
     
     init() {
+        location = storageLocation
+        if location == "" {
+            location = "Princeton"
+        }
         if location != "" {
             fetchData()
         }
     }
     
     func fetchData() {
-        self.isLoading = true
+//        storageLocation = location
+        isLoading = true
         let apiService = APIService.shared
         CLGeocoder().geocodeAddressString(location) { (placemarks, error) in
-            if let error = error {
-                print("line33" + error.localizedDescription)
+            if let error = error as? CLError {
+                switch error.code {
+                case .locationUnknown, .geocodeFoundNoResult, .geocodeFoundPartialResult:
+                    self.appError = AppError(errorString: NSLocalizedString("Unable to determine location", comment: ""))
+                case .network:
+                    self.appError = AppError(errorString: NSLocalizedString("Couldn't acces network", comment: ""))
+                @unknown default:
+                    self.appError = AppError(errorString: error.localizedDescription)
+                }
+                self.isLoading = false
+                self.location = "-----"
+                print("line 33" + error.localizedDescription)
             }
             if let lat = placemarks?.first?.location?.coordinate.latitude,
                let lon = placemarks?.first?.location?.coordinate.longitude {
@@ -41,14 +64,14 @@ class ForecastListViewModel: ObservableObject {
                             let to = ForecastViewModel(forecast: forecast, system: self.system)
                             self.forecasts = to
                             self.isLoading = false
-                            //                            self.forecasts = forecast.current.map { ForecastViewModel(forecast: $0)}
-//                            self.forecasts.append(contentsOf: forecast)
                         }
 
                     case .failure(let apiError):
                         switch apiError {
                         case .error(let errorString):
-                            print("line51" + errorString)
+                            self.isLoading = false
+                            self.appError = AppError(errorString: errorString)
+                            print("line 51" + errorString)
                         }
                     }
                 }

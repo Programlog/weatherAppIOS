@@ -30,7 +30,7 @@ struct SearchView: View {
             .navigationTitle("Search")
 
         }
-        .searchable(text: forecastListVM.$location, prompt: "Enter a city...") {
+        .searchable(text: forecastListVM.$storageLocation, prompt: "Enter a city...") {
 //            Text("🍎").searchCompletion("apple")
 //            Text("🍐").searchCompletion("Pear")
 //            Text("🍌").searchCompletion("banana")

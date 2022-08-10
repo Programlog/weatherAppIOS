@@ -19,52 +19,72 @@ struct HomeView2: View {
             LinearGradient(gradient: Gradient(colors: forecastListVM.forecasts?.backgroundColors ?? [.gray, Color("CloudyBackground")]), startPoint: .topLeading, endPoint: .bottomTrailing)
                 .edgesIgnoringSafeArea(.all)
             
-                ScrollView(.vertical, showsIndicators: false) {
+            ScrollView(.vertical, showsIndicators: false) {
+                
+                VStack {
+                    cityTextView(cityName: forecastListVM.location )
+                        .opacity(isAnimating ? 1: 0.1)
+                        .offset(y:isAnimating ? 0 : 15)
+                        .animation(.easeInOut(duration: 0.7), value: isAnimating)
+                    MainWeatherStatusView(Current: forecastListVM.forecasts?.Current ?? ["--", "-- %", "--", " -- mph", "-:-- AM", "-:-- PM", "", "hourglass.bottomhalf.filled"], isBottomSheet: $isBottomSheetCurrent)
+                        .opacity(isAnimating ? 1: 0.3)
+                        .animation(.easeOut(duration: 1), value: isAnimating)
                     
-                    VStack {
-                        cityTextView(cityName: forecastListVM.location )
-                            .opacity(isAnimating ? 1: 0.1)
-                            .offset(y:isAnimating ? 0 : 15)
-                            .animation(.easeInOut(duration: 0.7), value: isAnimating)
-                        MainWeatherStatusView(Current: forecastListVM.forecasts?.Current ?? ["--", "-- %", "--", " -- mph", "-:-- AM", "-:-- PM", "", "hourglass.bottomhalf.filled"], isBottomSheet: $isBottomSheetCurrent)
-                            .opacity(isAnimating ? 1: 0.3)
-                            .animation(.easeOut(duration: 1), value: isAnimating)
+                    HStack(spacing:25) {
+                        WeatherDayView(dayOfWeek: forecastListVM.forecasts?.Daily[12][1] ?? "--",
+                                        imageName: forecastListVM.forecasts?.dailySystemImages[1] ?? "hourglass.bottomhalf.filled",
+                                        temperature: forecastListVM.forecasts?.dailyTemp[1] ?? "--", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 1)
                         
-                        HStack(spacing:25) {
-                            WeatherDayView(dayOfWeek: forecastListVM.forecasts?.Daily[12][1] ?? "--",
-                                           imageName: forecastListVM.forecasts?.dailySystemImages[1] ?? "hourglass.bottomhalf.filled",
-                                           temperature: forecastListVM.forecasts?.dailyTemp[1] ?? "--", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 1)
-                            
-                            
-                            WeatherDayView(dayOfWeek: forecastListVM.forecasts?.Daily[12][2] ?? "--",
-                                           imageName: forecastListVM.forecasts?.dailySystemImages[2] ?? "hourglass.bottomhalf.filled",
-                                           temperature: forecastListVM.forecasts?.dailyTemp[2] ?? "--", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 2)
-                            
-                            WeatherDayView(dayOfWeek:  forecastListVM.forecasts?.Daily[12][3] ?? "--",
-                                           imageName: forecastListVM.forecasts?.dailySystemImages[3] ?? "hourglass.bottomhalf.filled",
-                                           temperature: forecastListVM.forecasts?.dailyTemp[3] ?? "--", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 3)
-                            
-                            WeatherDayView(dayOfWeek:  forecastListVM.forecasts?.Daily[12][4] ?? "--",
-                                           imageName: forecastListVM.forecasts?.dailySystemImages[4] ?? "hourglass.bottomhalf.filled",
-                                           temperature: forecastListVM.forecasts?.dailyTemp[4] ?? "--", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 4)
+                        
+                        WeatherDayView(dayOfWeek: forecastListVM.forecasts?.Daily[12][2] ?? "--",
+                                        imageName: forecastListVM.forecasts?.dailySystemImages[2] ?? "hourglass.bottomhalf.filled",
+                                        temperature: forecastListVM.forecasts?.dailyTemp[2] ?? "--", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 2)
+                        
+                        WeatherDayView(dayOfWeek:  forecastListVM.forecasts?.Daily[12][3] ?? "--",
+                                        imageName: forecastListVM.forecasts?.dailySystemImages[3] ?? "hourglass.bottomhalf.filled",
+                                        temperature: forecastListVM.forecasts?.dailyTemp[3] ?? "--", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 3)
+                        
+                        WeatherDayView(dayOfWeek:  forecastListVM.forecasts?.Daily[12][4] ?? "--",
+                                        imageName: forecastListVM.forecasts?.dailySystemImages[4] ?? "hourglass.bottomhalf.filled",
+                                        temperature: forecastListVM.forecasts?.dailyTemp[4] ?? "--", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 4)
 
-                            
-                            WeatherDayView(dayOfWeek:  forecastListVM.forecasts?.Daily[12][5] ?? "--",
-                                           imageName: forecastListVM.forecasts?.dailySystemImages[5] ?? "hourglass.bottomhalf.filled",
-                                           temperature: forecastListVM.forecasts?.dailyTemp[5] ?? "--", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 5)
-                        }
+                        
+                        WeatherDayView(dayOfWeek:  forecastListVM.forecasts?.Daily[12][5] ?? "--",
+                                        imageName: forecastListVM.forecasts?.dailySystemImages[5] ?? "hourglass.bottomhalf.filled",
+                                        temperature: forecastListVM.forecasts?.dailyTemp[5] ?? "--", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 5)
                     }
-                }.onAppear(perform: {
-                    isAnimating = true
-                    forecastListVM.fetchData()
-                })
-                .partialSheet(isPresented: $isBottomSheetCurrent) {
-                    halfASheetView(title: "Current", currentData: forecastListVM.forecasts?.Current ?? ["", "", "", "", "", ""])
-                 }
-                .partialSheet(isPresented: $isBottomSheetDaily) {
-                    halfASheetView(title: "Daily", dailyData: forecastListVM.forecasts ?? staticData, dailyDaily: forecastListVM.forecasts?.Daily, dayNum: day)
                 }
+            }.onAppear(perform: {
+                isAnimating = true
+//                forecastListVM.fetchData()
+            })
+            .partialSheet(isPresented: $isBottomSheetCurrent) {
+                halfASheetView(title: "Current", currentData: forecastListVM.forecasts?.Current ?? ["", "", "", "", "", ""])
+                }
+            .partialSheet(isPresented: $isBottomSheetDaily) {
+                halfASheetView(title: "Daily", dailyData: forecastListVM.forecasts ?? staticData, dailyDaily: forecastListVM.forecasts?.Daily, dayNum: day)
+            }
+            
+            if forecastListVM.isLoading {
+                ZStack {
+                    Color.white
+                        .opacity(0.4)
+                        .ignoresSafeArea()
+                    ProgressView("Loading Weather")
+                        .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color(.systemBackground)))
+                }
+            }
+            
         }.attachPartialSheetToRoot()
+            .alert(item: $forecastListVM.appError) { appAlert in
+                Alert(title: Text("Error"),
+                      message: Text("""
+                                    \(appAlert.errorString)
+                                    Please try again later.
+                                    """))
+            }
     }
     
     struct WeatherDayView: View {
@@ -159,38 +179,11 @@ struct MainWeatherStatusView: View {
                         .padding(.top, 15)
                 }
             }
-            
         }
         .padding(.bottom, 80)
         .shadow(color: Color("ColorBlackTransparentLight"), radius: 10, x: 0, y: 5)
     }
 }
-//
-//struct WeatherDayView: View {
-//    var dayOfWeek: String
-//    var imageName: String
-//    var temperature: Int
-//
-//    var body: some View {
-//        VStack {
-//            Text(dayOfWeek)
-//                .font(.system(size: 17, weight: .medium))
-//                .foregroundColor(.white)
-//
-//            Image(systemName: imageName)
-//                .renderingMode(.original)
-//                .resizable()
-//                .aspectRatio(contentMode: .fit)
-//                .frame(width: 45, height: 45)
-//
-//            Text("\(temperature)")
-//                .font(.system(size: 28, weight: .medium))
-//                .foregroundColor(.white)
-//        }
-//        .shadow(color: Color("ColorBlackTransparentLight"), radius: 5, x: 0, y: 2)
-//    }
-//}
-//
 
 //struct WeatherDayView: View {
 //    var dayOfWeek: String

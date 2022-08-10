@@ -5,6 +5,7 @@
 //  Created by Varun K on 7/29/22.
 //
 import SwiftUI
+import UIKit
 
 struct ContentView: View {
     @StateObject var forecastListVM = ForecastListViewModel()
@@ -12,34 +13,26 @@ struct ContentView: View {
         UITabBar.appearance().barTintColor = UIColor.black
     }
     var body: some View {
-        if forecastListVM.isLoading {
-            ProgressView()
-                .progressViewStyle(CircularProgressViewStyle(tint: .blue))
-                .fullScreenCover(isPresented: $forecastListVM.isLoading, content: ProgressView.init)
-        } else {
-                TabView {
-                    HomeView2()
-                        .tabItem {
-                            Image(systemName: "house")
-                            Text("Home")
-                            
-                        }
-                    SearchView()
-                        .tabItem {
-                            Image(systemName: "magnifyingglass.circle.fill")
-                            Text("Search")
-                        }
-                    SettingsView()
-                        .tabItem {
-                            Image(systemName: "gear")
-                            Text("Settings")
-                        }
-                        .preferredColorScheme(.dark)
+        TabView {
+            HomeView2()
+                .tabItem {
+                    Image(systemName: "house")
+                    Text("Home")
+                    
                 }
-//                .preferredColorScheme(.dark)
-                .font(.headline)
-            
+            SearchView()
+                .tabItem {
+                    Image(systemName: "magnifyingglass.circle.fill")
+                    Text("Search")
+                }
+            SettingsView()
+                .tabItem {
+                    Image(systemName: "gear")
+                    Text("Settings")
+                }
+                .preferredColorScheme(.dark)
         }
+        .font(.headline)
 //        ZStack {
 //            NavigationView {
 //                VStack {
