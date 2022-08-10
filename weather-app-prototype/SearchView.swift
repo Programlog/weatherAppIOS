@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct SearchView: View {
-    @State private var searchTerm = ""
     @StateObject var forecastListVM = ForecastListViewModel()
+    @State var isSheet: Bool = false
 
     var body: some View {
         NavigationView {
@@ -21,6 +21,7 @@ struct SearchView: View {
                 
                 Button("Search") {
                     forecastListVM.fetchData()
+                    isSheet.toggle()
                 }
             }
             .padding()
@@ -33,6 +34,9 @@ struct SearchView: View {
 //            Text("🍎").searchCompletion("apple")
 //            Text("🍐").searchCompletion("Pear")
 //            Text("🍌").searchCompletion("banana")
+        }
+        .sheet(isPresented: $isSheet) {
+            HomeView2()
         }
     }
 }

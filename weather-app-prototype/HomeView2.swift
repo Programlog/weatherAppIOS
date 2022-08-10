@@ -1,7 +1,6 @@
 import SwiftUI
-import HalfASheet
 import PartialSheet
-import PartialSheet
+import CoreLocation
 
 struct HomeView2: View {
     @State private var isAnimating: Bool = false
@@ -23,7 +22,7 @@ struct HomeView2: View {
                 ScrollView(.vertical, showsIndicators: false) {
                     
                     VStack {
-                        cityTextView(cityName: forecastListVM.location)
+                        cityTextView(cityName: forecastListVM.location )
                             .opacity(isAnimating ? 1: 0.1)
                             .offset(y:isAnimating ? 0 : 15)
                             .animation(.easeInOut(duration: 0.7), value: isAnimating)
@@ -61,7 +60,6 @@ struct HomeView2: View {
                 })
                 .partialSheet(isPresented: $isBottomSheetCurrent) {
                     halfASheetView(title: "Current", currentData: forecastListVM.forecasts?.Current ?? ["", "", "", "", "", ""])
-                    
                  }
                 .partialSheet(isPresented: $isBottomSheetDaily) {
                     halfASheetView(title: "Daily", dailyData: forecastListVM.forecasts ?? staticData, dailyDaily: forecastListVM.forecasts?.Daily, dayNum: day)

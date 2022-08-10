@@ -5,7 +5,8 @@
 //  Created by Varun K on 8/6/22.
 //
 import CoreLocation
-
+import MapKit
+import Contacts
 import SwiftUI
 
 struct ForecastViewModel: View {
@@ -259,21 +260,6 @@ struct ForecastViewModel: View {
         
     var currentSystemImage: String {
         return getSystemImage(icon: forecast.current.weather[0].icon)
-    }
-    
-    var cityName: String {
-        var cityString: String = "Princeton"
-        let geoCoder = CLGeocoder()
-        let location = CLLocation(latitude: forecast.lat, longitude: forecast.lon)
-        geoCoder.reverseGeocodeLocation(location, completionHandler: { placemarks, error -> Void in
-            guard let placeMark = placemarks?.first else { return }
-                if let city = placeMark.subAdministrativeArea {
-                    cityString = city
-                }
-            })
-
-        return cityString
-
     }
     
     var currentWindSpeed: String {
