@@ -20,13 +20,30 @@ struct HomeView2: View {
                 .edgesIgnoringSafeArea(.all)
             
             ScrollView(.vertical, showsIndicators: false) {
-                
                 VStack {
-                    cityTextView(cityName: forecastListVM.location )
-                        .opacity(isAnimating ? 1: 0.1)
-                        .offset(y:isAnimating ? 0 : 15)
-                        .animation(.easeInOut(duration: 0.7), value: isAnimating)
-                    MainWeatherStatusView(Current: forecastListVM.forecasts?.Current ?? ["--", "-- %", "--", " -- mph", "-:-- AM", "-:-- PM", "", "hourglass.bottomhalf.filled"], isBottomSheet: $isBottomSheetCurrent)
+                    ZStack {
+                        Spacer()
+                        HStack {
+                            cityTextView(cityName: forecastListVM.location )
+                                .opacity(isAnimating ? 1: 0.3)
+                                .offset(y:isAnimating ? 0 : 15)
+                                .animation(.easeInOut(duration: 0.7), value: isAnimating)
+                        }
+                        HStack {
+                            Spacer()
+                            Button {
+                                forecastListVM.fetchData()
+                            } label: {
+                                Image(systemName: "arrow.triangle.2.circlepath")
+                            }
+                            .opacity(isAnimating ? 1: 0.4)
+                            .offset(x: isAnimating ? 0: 13)
+                            .animation(.easeOut(duration: 0.8), value: isAnimating)
+                            .padding(.trailing, 20)
+                        }
+                    }
+
+                    MainWeatherStatusView(Current: forecastListVM.forecasts?.Current ?? ["--", "-- %", "--", " -- mph", "-:-- AM", "-:-- PM", "", "hourglass.bottomhalf.filled"],high: forecastListVM.forecasts?.dailyHigh[0] ?? "--", low: forecastListVM.forecasts?.dailyLow[0] ?? "--" ,isBottomSheet: $isBottomSheetCurrent)
                         .opacity(isAnimating ? 1: 0.3)
                         .animation(.easeOut(duration: 1), value: isAnimating)
                     
@@ -153,13 +170,14 @@ struct cityTextView: View {
         Text(cityName)
             .font(.system(size: 32, weight: .medium, design: .default))
             .foregroundColor(.white)
-//            .padding(.top, -18)
             .shadow(color: Color("ColorBlackTransparentDark"), radius: 8, x: 0, y: 3)
     }
 }
 
 struct MainWeatherStatusView: View {
     var Current: [String]
+    var high: String
+    var low: String
     @Binding var isBottomSheet: Bool
 
     var body: some View {
@@ -177,6 +195,13 @@ struct MainWeatherStatusView: View {
                         .font(.system(size: 70, weight: .semibold))
                         .foregroundColor(.white)
                         .padding(.top, 15)
+                        .padding(.bottom, 10)
+                    HStack(alignment: .center, spacing: 30) {
+                        Text("H: \(high)")
+                            .foregroundColor(.white)
+                        Text("L: \(low)")
+                            .foregroundColor(.white)
+                    }
                 }
             }
         }

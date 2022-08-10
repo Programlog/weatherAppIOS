@@ -74,14 +74,10 @@ struct SettingsView: View {
                                         Text("°C").tag(0)
                                     }, label: {
                                 }).pickerStyle(SegmentedPickerStyle())
-//                                    .padding(.horizontal)
                                     .frame(width: 110)
                                     .cornerRadius(8)
                                     .shadow(color: .gray.opacity(0.3), radius: 6, x: 0, y: 6)
                             }.padding(.top, 6)
-                            
-
-
                         }
                     
 //                    section 3
