@@ -16,8 +16,6 @@ class ForecastListViewModel: ObservableObject {
     }
     @Published var forecasts: ForecastViewModel?
     @Published var appError: AppError? = nil
-//    var appError: AppError? = nil
-
     @Published var isLoading: Bool = false
     @AppStorage("location") var storageLocation: String = "Princeton"
     @Published var location = ""

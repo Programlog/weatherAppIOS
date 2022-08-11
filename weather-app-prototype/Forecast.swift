@@ -25,8 +25,8 @@ struct Forecast: Codable {
         
         let temp: Temp
         let weather: [Weather]
-        let pop: Double
-        let uvi: Double
+        let pop: Float
+        let uvi: Float
         let dt: Date
         let humidity: Int
         let wind_deg: Int

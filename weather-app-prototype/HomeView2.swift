@@ -35,6 +35,7 @@ struct HomeView2: View {
                                 forecastListVM.fetchData()
                             } label: {
                                 Image(systemName: "arrow.triangle.2.circlepath")
+                                    .foregroundColor(.white)
                             }
                             .opacity(isAnimating ? 1: 0.4)
                             .offset(x: isAnimating ? 0: 13)
@@ -50,30 +51,32 @@ struct HomeView2: View {
                     HStack(spacing:25) {
                         WeatherDayView(dayOfWeek: forecastListVM.forecasts?.Daily[12][1] ?? "--",
                                         imageName: forecastListVM.forecasts?.dailySystemImages[1] ?? "hourglass.bottomhalf.filled",
-                                        temperature: forecastListVM.forecasts?.dailyTemp[1] ?? "--", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 1)
+                                       temperature: forecastListVM.forecasts?.dailyTemp[1] ?? "--", pop: forecastListVM.forecasts?.forecast.daily[1].pop ?? 0, isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 1)
                         
                         
                         WeatherDayView(dayOfWeek: forecastListVM.forecasts?.Daily[12][2] ?? "--",
                                         imageName: forecastListVM.forecasts?.dailySystemImages[2] ?? "hourglass.bottomhalf.filled",
-                                        temperature: forecastListVM.forecasts?.dailyTemp[2] ?? "--", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 2)
+                                       temperature: forecastListVM.forecasts?.dailyTemp[2] ?? "--", pop: forecastListVM.forecasts?.forecast.daily[2].pop ?? 0, isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 2)
                         
                         WeatherDayView(dayOfWeek:  forecastListVM.forecasts?.Daily[12][3] ?? "--",
                                         imageName: forecastListVM.forecasts?.dailySystemImages[3] ?? "hourglass.bottomhalf.filled",
-                                        temperature: forecastListVM.forecasts?.dailyTemp[3] ?? "--", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 3)
+                                       temperature: forecastListVM.forecasts?.dailyTemp[3] ?? "--", pop: forecastListVM.forecasts?.forecast.daily[3].pop ?? 0, isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 3)
                         
                         WeatherDayView(dayOfWeek:  forecastListVM.forecasts?.Daily[12][4] ?? "--",
                                         imageName: forecastListVM.forecasts?.dailySystemImages[4] ?? "hourglass.bottomhalf.filled",
-                                        temperature: forecastListVM.forecasts?.dailyTemp[4] ?? "--", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 4)
+                                       temperature: forecastListVM.forecasts?.dailyTemp[4] ?? "--", pop: forecastListVM.forecasts?.forecast.daily[4].pop ?? 0, isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 4)
 
                         
                         WeatherDayView(dayOfWeek:  forecastListVM.forecasts?.Daily[12][5] ?? "--",
                                         imageName: forecastListVM.forecasts?.dailySystemImages[5] ?? "hourglass.bottomhalf.filled",
-                                        temperature: forecastListVM.forecasts?.dailyTemp[5] ?? "--", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 5)
+                                       temperature: forecastListVM.forecasts?.dailyTemp[5] ?? "--", pop: forecastListVM.forecasts?.forecast.daily[5].pop ?? 0, isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 5)
                     }
                 }
             }.onAppear(perform: {
                 isAnimating = true
-//                forecastListVM.fetchData()
+            })
+            .onChange(of: forecastListVM.system, perform: { _ in
+                forecastListVM.fetchData()
             })
             .partialSheet(isPresented: $isBottomSheetCurrent) {
                 halfASheetView(title: "Current", currentData: forecastListVM.forecasts?.Current ?? ["", "", "", "", "", ""])
@@ -108,6 +111,7 @@ struct HomeView2: View {
         var dayOfWeek: String
         var imageName: String
         var temperature: String
+        var pop: Float
         @Binding var isBottomSheet: Bool
         @Binding var dayNum: Int
         var pos: Int
@@ -121,7 +125,6 @@ struct HomeView2: View {
                         Text(dayOfWeek)
                             .font(.system(size: 17, weight: .medium))
                             .foregroundColor(.white)
-//                            .frame(width: 45, height: 20, alignment: .center)
                         Image(systemName: imageName)
                             .renderingMode(.original)
                             .resizable()
@@ -131,21 +134,28 @@ struct HomeView2: View {
                             .font(.system(size: 28, weight: .medium))
                             .foregroundColor(.white)
                             .shadow(color: Color("ColorBlackTransparentLight"), radius: 5, x: 0, y: 2)
+                        if let pop = Int(pop*100) {
+                            if pop > 20 {
+                                popView(pop: pop)
+                            } else {
+                                Spacer()
+                            }
+                        } else {
+                            Spacer()
+                        }
                     }
                 }
-
-                
-//                Text(temperature)
-//                    .font(.system(size: 28, weight: .medium))
-//                    .foregroundColor(.white)
-//                    .shadow(color: Color("ColorBlackTransparentLight"), radius: 5, x: 0, y: 2)
-
             }
-            
+        }
+        struct popView: View {
+            var pop: Int
+            var body: some View {
+                Text("\(pop)%")
+                .font(.body)
+                .foregroundColor(.blue)
+            }
         }
     }
-
-
 }
 
 
