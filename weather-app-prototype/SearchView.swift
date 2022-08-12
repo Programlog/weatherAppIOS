@@ -10,34 +10,32 @@ import SwiftUI
 struct SearchView: View {
     @StateObject var forecastListVM = ForecastListViewModel()
     @State var isSheet: Bool = false
+    var cities = loadCSV(from: "us_cities")
+    var filtered: [City] {
+        if forecastListVM.location == "" {return cities}
+        return cities.filter {
+            $0.CITY.lowercased().localizedCaseInsensitiveContains(forecastListVM.location)
+        }
+    }
 
     var body: some View {
         NavigationView {
-            VStack{
-                Text("Find a city")
-                    .font(.title.weight(.bold))
-                Text("Start searching for a city")
-                    .multilineTextAlignment(.center)
-                
-                Button("Search") {
-                    forecastListVM.fetchData()
-                    isSheet.toggle()
+            List(filtered) { city in
+                NavigationLink(isActive: Binding<Bool>(get: {isSheet}, set: {isSheet = $0; forecastListVM.fetchData(lat: Double(city.LATITUDE)!, lon: Double(city.LONGITUDE)!)})) {
+                    HomeView2()
+                } label: {
+                    Text("\(city.CITY), \(city.STATE_CODE)")
                 }
             }
-            .padding()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .foregroundColor(.gray)
-            .navigationTitle("Search")
 
+        }.searchable(text: $forecastListVM.location, placement: .navigationBarDrawer(displayMode: .always), prompt: "Enter a city") {
+            if filtered.isEmpty {
+                let randomCity = cities.randomElement()
+                Text("Maybe you are looking for \(randomCity?.CITY ?? "Princeton"), \(randomCity?.STATE_CODE ?? "NJ")")
+                    .searchCompletion("\(randomCity?.CITY ?? "Princeton"), \(randomCity?.STATE_CODE ?? "NJ")")
+            }
         }
-        .searchable(text: forecastListVM.$storageLocation, prompt: "Enter a city...") {
-//            Text("🍎").searchCompletion("apple")
-//            Text("🍐").searchCompletion("Pear")
-//            Text("🍌").searchCompletion("banana")
-        }
-        .sheet(isPresented: $isSheet) {
-            HomeView2()
-        }
+        .navigationTitle("Search")
     }
 }
 

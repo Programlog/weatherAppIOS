@@ -36,7 +36,6 @@ class ForecastListViewModel: ObservableObject {
     }
     
     func fetchData() {
-//        storageLocation = location
         isLoading = true
         let apiService = APIService.shared
         CLGeocoder().geocodeAddressString(location) { (placemarks, error) in
@@ -72,6 +71,28 @@ class ForecastListViewModel: ObservableObject {
                             print("line 51" + errorString)
                         }
                     }
+                }
+            }
+        }
+    }
+    func fetchData(lat: Double, lon: Double) {
+        isLoading = true
+        let apiService = APIService.shared
+        apiService.getJSON(urlString: "https://api.openweathermap.org/data/2.5/onecall?lat=\(lat)&lon=\(lon)&exclude=minutely&appid=9c26eaf199aee244e3918d36243ffd97&units=imperial", dateDecodingStrategy: .secondsSince1970) { (result: Result<Forecast, APIService.APIError>) in
+            switch result {
+            case .success(let forecast):
+                DispatchQueue.main.async {
+                    let to = ForecastViewModel(forecast: forecast, system: self.system)
+                    self.forecasts = to
+                    self.isLoading = false
+                }
+                
+            case .failure(let apiError):
+                switch apiError {
+                case .error(let errorString):
+                    self.isLoading = false
+                    self.appError = AppError(errorString: errorString)
+                    print("line 51" + errorString)
                 }
             }
         }
