@@ -19,11 +19,7 @@ class ForecastListViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @AppStorage("location") var storageLocation: String = "Princeton"
     @Published var location = ""
-    @AppStorage("system") var system: Int = 0 {
-        didSet {
-            forecasts?.system = system
-        }
-    }
+    @AppStorage("system") var system: Int = 0
     
     init() {
         location = storageLocation
@@ -54,7 +50,9 @@ class ForecastListViewModel: ObservableObject {
             }
             if let lat = placemarks?.first?.location?.coordinate.latitude,
                let lon = placemarks?.first?.location?.coordinate.longitude {
-                apiService.getJSON(urlString: "https://api.openweathermap.org/data/2.5/onecall?lat=\(lat)&lon=\(lon)&exclude=minutely&appid=9c26eaf199aee244e3918d36243ffd97&units=imperial", dateDecodingStrategy: .secondsSince1970) { (result: Result<Forecast, APIService.APIError>) in
+                apiService.getJSON(urlString: "https://api.openweathermap.org/data/2.5/onecall?lat=\(lat)&lon=\(lon)&exclude=minutely&appid=9c26eaf199aee244e3918d36243ffd97&units=imperial"
+//                                   , dateDecodingStrategy: .secondsSince1970
+                ) { (result: Result<Forecast, APIService.APIError>) in
                     switch result {
                     case .success(let forecast):
                         DispatchQueue.main.async {
@@ -78,7 +76,9 @@ class ForecastListViewModel: ObservableObject {
     func fetchData(lat: Double, lon: Double) {
         isLoading = true
         let apiService = APIService.shared
-        apiService.getJSON(urlString: "https://api.openweathermap.org/data/2.5/onecall?lat=\(lat)&lon=\(lon)&exclude=minutely&appid=9c26eaf199aee244e3918d36243ffd97&units=imperial", dateDecodingStrategy: .secondsSince1970) { (result: Result<Forecast, APIService.APIError>) in
+        apiService.getJSON(urlString: "https://api.openweathermap.org/data/2.5/onecall?lat=\(lat)&lon=\(lon)&exclude=minutely&appid=9c26eaf199aee244e3918d36243ffd97&units=imperial"
+//                           , dateDecodingStrategy: .secondsSince1970
+        ) { (result: Result<Forecast, APIService.APIError>) in
             switch result {
             case .success(let forecast):
                 DispatchQueue.main.async {

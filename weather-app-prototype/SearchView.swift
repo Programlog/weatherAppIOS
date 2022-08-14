@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct SearchView: View {
-    @StateObject var forecastListVM = ForecastListViewModel()
+//    @ObservedObject var forecastListVM = ForecastListViewModel()
+    @EnvironmentObject var forecastListVM: ForecastListViewModel
     @State var isSheet: Bool = false
-    var cities = loadCSV(from: "us_cities")
-    var filtered: [City] {
+    private let cities = loadCSV(from: "us_cities")
+    private var filtered: [City] {
         if forecastListVM.location == "" {return cities}
         return cities.filter {
             $0.CITY.lowercased().localizedCaseInsensitiveContains(forecastListVM.location)
@@ -26,6 +27,7 @@ struct SearchView: View {
                 } label: {
                     Text("\(city.CITY), \(city.STATE_CODE)")
                 }
+//                NavigationLink(destination: <#T##() -> _#>, label: Text("\(city.CITY), \(city.STATE_CODE)"))
             }
 
         }.searchable(text: $forecastListVM.location, placement: .navigationBarDrawer(displayMode: .always), prompt: "Enter a city") {
@@ -38,22 +40,3 @@ struct SearchView: View {
         .navigationTitle("Search")
     }
 }
-
-struct SearchView_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchView()
-    }
-}
-
-//TextField("Enter a location", text: $forecastListVM.location)
-//    .textFieldStyle(RoundedBorderTextFieldStyle())
-//    .padding(.horizontal, 20)
-//Button {
-//    forecastListVM.fetchData()
-//} label: {
-//    Image(systemName: "magnifyingglass.circle.fill")
-//        .font(.title3)
-//}
-//.padding(30)
-//}
-//}

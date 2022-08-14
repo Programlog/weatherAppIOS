@@ -25,7 +25,6 @@
 		C7324F9928A1ABEC00540D8A /* SettingsLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7324F9628A1ABEC00540D8A /* SettingsLabelView.swift */; };
 		C7324F9E28A201DC00540D8A /* WeatherInfoRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7324F9D28A201DC00540D8A /* WeatherInfoRows.swift */; };
 		C7324FA128A2143B00540D8A /* PartialSheet in Frameworks */ = {isa = PBXBuildFile; productRef = C7324FA028A2143B00540D8A /* PartialSheet */; };
-		C7F188A328A4C0B60026F1C6 /* ScrollingHStackModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F188A228A4C0B60026F1C6 /* ScrollingHStackModifier.swift */; };
 		C7F188A528A590200026F1C6 /* DataFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F188A428A590200026F1C6 /* DataFactory.swift */; };
 /* End PBXBuildFile section */
 
@@ -50,7 +49,6 @@
 		C7324F9628A1ABEC00540D8A /* SettingsLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLabelView.swift; sourceTree = "<group>"; };
 		C7324F9728A1ABEC00540D8A /* SettingsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRowView.swift; sourceTree = "<group>"; };
 		C7324F9D28A201DC00540D8A /* WeatherInfoRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherInfoRows.swift; sourceTree = "<group>"; };
-		C7F188A228A4C0B60026F1C6 /* ScrollingHStackModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollingHStackModifier.swift; sourceTree = "<group>"; };
 		C7F188A428A590200026F1C6 /* DataFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataFactory.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -92,7 +90,6 @@
 				9FF48C92289F269D004148B0 /* ForecastListViewModel.swift */,
 				9FF48C8A289EFBC1004148B0 /* Forecast.swift */,
 				9F1F9F0D28A0AC110072921A /* HomeView2.swift */,
-				C7F188A228A4C0B60026F1C6 /* ScrollingHStackModifier.swift */,
 				C7324F9D28A201DC00540D8A /* WeatherInfoRows.swift */,
 				9F1F9F0F28A0B4E00072921A /* SearchView.swift */,
 				9FF48C8C289EFE54004148B0 /* APIService.swift */,
@@ -198,7 +195,6 @@
 			files = (
 				9F3E21502894C64C0038733F /* ContentView.swift in Sources */,
 				9F1F9F1028A0B4E00072921A /* SearchView.swift in Sources */,
-				C7F188A328A4C0B60026F1C6 /* ScrollingHStackModifier.swift in Sources */,
 				C7324F9828A1ABEC00540D8A /* SettingsRowView.swift in Sources */,
 				9FF48C8B289EFBC1004148B0 /* Forecast.swift in Sources */,
 				C7324F9528A1ABCC00540D8A /* SettingsView.swift in Sources */,

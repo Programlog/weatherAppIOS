@@ -278,6 +278,13 @@ struct ForecastViewModel: View {
     var Current: [String] {
         return [currentTemp, currentFeelsLikeTemp, currentHumidity, currentWindSpeed + " " + currentWinDir, currentSunrise, currentSunset, currentUv, currentSystemImage]
     }
+    
+//    var cityName: String {
+//        let location = CLLocation(latitude: forecast.lat, longitude: forecast.lon)
+//        CLGeocoder.reverseGeocodeLocation(location) { (placemarks, error) in
+//            return placemarks
+//        }
+//    }
 
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)

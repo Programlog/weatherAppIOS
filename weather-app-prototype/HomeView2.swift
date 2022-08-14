@@ -1,13 +1,24 @@
 import SwiftUI
 import PartialSheet
 import CoreLocation
+import MapKit
 
 struct HomeView2: View {
     @State private var isAnimating: Bool = false
 //    @AppStorage("isCurrentLocation") var isCurrentLocation: Bool = false
-    @StateObject var forecastListVM = ForecastListViewModel()
-    @State var isBottomSheetCurrent: Bool = false
-    @State var isBottomSheetDaily: Bool = false
+//    @StateObject var forecastListVM = ForecastListViewModel()
+    @EnvironmentObject var forecastListVM: ForecastListViewModel
+    @State private var isBottomSheetCurrent: Bool = false
+    @State private var isBottomSheetDaily: Bool = false
+    @State private var showingSheet: Bool = false
+    @State private var region = MKCoordinateRegion(
+                    center: CLLocationCoordinate2D(
+                        latitude: 40.83834587046632,
+                        longitude: 14.254053016537693),
+                    span: MKCoordinateSpan(
+                        latitudeDelta: 0.03,
+                        longitudeDelta: 0.03)
+                    )
 //    private let staticData: ForecastViewModel = ForecastViewModel(forecast: Forecast(daily: [Forecast.Daily(temp: Forecast.Daily.Temp(min: 40, max: 80, day: 60), weather: [Forecast.Daily.Weather(id: 400, main: "Clear", icon: "01d")], pop: 0.33, uvi: 0, dt: Date(timeIntervalSince1970: 1660065467), humidity: 40, wind_deg: 40, wind_gust: 10, sunrise: 1660065467, sunset: 1660065467, feels_like: Forecast.Daily.FeelsLike(day: 77))], lat: 40, lon: -74, timezone_offset: -1200, current: Forecast.Current(sunrise: 1660065467, sunset: 1660065467, temp: 40, feels_like: 50, humidity: 33, uvi: 0, wind_speed: 0, wind_deg: 0, weather: [Forecast.Current.Weather(id: 400, main: "Clear", icon: "01d", description: "Clear skies")])), system: 0)
     
     @State private var day: Int = 0
@@ -18,34 +29,40 @@ struct HomeView2: View {
                 .edgesIgnoringSafeArea(.all)
             
             ScrollView(.vertical, showsIndicators: false) {
-//                Text("\(forecastListVM.forecasts?.forecast.lat ?? -1)")
                 VStack {
-                    ZStack {
-                        Spacer()
-                        HStack {
-                            cityTextView(cityName: forecastListVM.location )
-                                .opacity(isAnimating ? 1: 0.3)
-                                .offset(y:isAnimating ? 0 : 15)
-                                .animation(.easeInOut(duration: 0.7), value: isAnimating)
-                        }
-                        HStack {
-                            Spacer()
-                            Button {
-                                forecastListVM.fetchData()
-                            } label: {
-                                Image(systemName: "arrow.triangle.2.circlepath")
-                                    .foregroundColor(.white)
+                    Button {
+                        print(String(describing: region))
+                        self.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: forecastListVM.forecasts?.forecast.lat ?? 40.741895, longitude: forecastListVM.forecasts?.forecast.lon ?? -73.989308), span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03))
+                        showingSheet.toggle()
+                    } label: {
+                        cityTextView(cityName: forecastListVM.location )
+                            .opacity(isAnimating ? 1: 0.3)
+                            .offset(y:isAnimating ? 0 : -15)
+                            .animation(.easeInOut(duration: 0.7), value: isAnimating)
+                    }
+                    .sheet(isPresented: $showingSheet) {
+                        VStack {
+                            HStack {
+                                Spacer()
+                                Button {
+                                    showingSheet.toggle()
+                                } label: {
+                                    Text("Done")
+                                        .padding(15)
+                                }
+                                
                             }
-                            .opacity(isAnimating ? 1: 0.4)
-                            .offset(x: isAnimating ? 0: 13)
-                            .animation(.easeOut(duration: 0.8), value: isAnimating)
-                            .padding(.trailing, 20)
+                            Map(coordinateRegion: self.$region)
+                                .edgesIgnoringSafeArea(.top)
+                            Text("\(forecastListVM.forecasts?.forecast.lat ?? -1)")
+                            Text("\(forecastListVM.forecasts?.forecast.lon ?? -1)")
                         }
                     }
 
+                    
+
                     MainWeatherStatusView(Current: forecastListVM.forecasts?.Current ?? ["--", "-- %", "--", " -- mph", "-:-- AM", "-:-- PM", "", "hourglass.bottomhalf.filled"],high: forecastListVM.forecasts?.dailyHigh[0] ?? "--", low: forecastListVM.forecasts?.dailyLow[0] ?? "--" ,isBottomSheet: $isBottomSheetCurrent)
                         .opacity(isAnimating ? 1: 0.3)
-                        .animation(.easeOut(duration: 1), value: isAnimating)
                     
                     HStack(spacing:25) {
                         ForEach(1...5, id: \.self) { i in
@@ -245,12 +262,12 @@ struct halfASheetView: View {
                 let dayName = getFullDay(day: dailyData.date[dayNum])
                 halfSheetTitleCard(title: dayName, systemImage: dailyData.dailySystemImages[dayNum])
                 
-              VStack(spacing: 20) {
-                ForEach(0..<dataPointsDaily.count, id: \.self) { i in
-                    WeatherInfoRows(systemImage: iconsDaily[i], property: dataPointsDaily[i], value: dailyDaily[i+1][dayNum])
-                    Divider()
+                VStack(spacing: 20) {
+                    ForEach(0..<dataPointsDaily.count, id: \.self) { i in
+                        WeatherInfoRows(systemImage: iconsDaily[i], property: dataPointsDaily[i], value: dailyDaily[i+1][dayNum])
+                        Divider()
+                    }
                 }
-            }
             }
         } else {
             Image(systemName: "sunset.fill")

@@ -15,7 +15,7 @@ public class APIService {
     }
     
     public func getJSON<T: Decodable>(urlString: String,
-                 dateDecodingStrategy: JSONDecoder.DateDecodingStrategy = .deferredToDate,
+//                 dateDecodingStrategy: JSONDecoder.DateDecodingStrategy = .deferredToDate,
                  keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy = .useDefaultKeys,
                  completion: @escaping (Result<T,APIError>) -> Void) {
         
@@ -35,7 +35,7 @@ public class APIService {
                 return
             }
             let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = dateDecodingStrategy
+//            decoder.dateDecodingStrategy = dateDecodingStrategy
             decoder.keyDecodingStrategy = keyDecodingStrategy
             
             do {
