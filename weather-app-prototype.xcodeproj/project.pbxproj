@@ -25,6 +25,7 @@
 		C7324F9928A1ABEC00540D8A /* SettingsLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7324F9628A1ABEC00540D8A /* SettingsLabelView.swift */; };
 		C7324F9E28A201DC00540D8A /* WeatherInfoRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7324F9D28A201DC00540D8A /* WeatherInfoRows.swift */; };
 		C7324FA128A2143B00540D8A /* PartialSheet in Frameworks */ = {isa = PBXBuildFile; productRef = C7324FA028A2143B00540D8A /* PartialSheet */; };
+		C7D91E1728AC2A900062B8C3 /* SwiftUISnappingScrollView in Frameworks */ = {isa = PBXBuildFile; productRef = C7D91E1628AC2A900062B8C3 /* SwiftUISnappingScrollView */; };
 		C7F188A528A590200026F1C6 /* DataFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7F188A428A590200026F1C6 /* DataFactory.swift */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C7D91E1728AC2A900062B8C3 /* SwiftUISnappingScrollView in Frameworks */,
 				C7324FA128A2143B00540D8A /* PartialSheet in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -133,6 +135,7 @@
 			name = "weather-app-prototype";
 			packageProductDependencies = (
 				C7324FA028A2143B00540D8A /* PartialSheet */,
+				C7D91E1628AC2A900062B8C3 /* SwiftUISnappingScrollView */,
 			);
 			productName = "weather-app-prototype";
 			productReference = 9F3E214A2894C64C0038733F /* weather-app-prototype.app */;
@@ -164,6 +167,7 @@
 			mainGroup = 9F3E21412894C64C0038733F;
 			packageReferences = (
 				C7324F9F28A2143B00540D8A /* XCRemoteSwiftPackageReference "PartialSheet" */,
+				C7D91E1528AC2A900062B8C3 /* XCRemoteSwiftPackageReference "SwiftUISnappingScrollView" */,
 			);
 			productRefGroup = 9F3E214B2894C64C0038733F /* Products */;
 			projectDirPath = "";
@@ -429,6 +433,14 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		C7D91E1528AC2A900062B8C3 /* XCRemoteSwiftPackageReference "SwiftUISnappingScrollView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ciaranrobrien/SwiftUISnappingScrollView?ref=iosexample.com";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -436,6 +448,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C7324F9F28A2143B00540D8A /* XCRemoteSwiftPackageReference "PartialSheet" */;
 			productName = PartialSheet;
+		};
+		C7D91E1628AC2A900062B8C3 /* SwiftUISnappingScrollView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C7D91E1528AC2A900062B8C3 /* XCRemoteSwiftPackageReference "SwiftUISnappingScrollView" */;
+			productName = SwiftUISnappingScrollView;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

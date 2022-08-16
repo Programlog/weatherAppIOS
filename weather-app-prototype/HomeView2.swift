@@ -1,27 +1,28 @@
 import SwiftUI
 import PartialSheet
-import CoreLocation
 import MapKit
+import SwiftUISnappingScrollView
 
 struct HomeView2: View {
     @State private var isAnimating: Bool = false
-//    @AppStorage("isCurrentLocation") var isCurrentLocation: Bool = false
-//    @StateObject var forecastListVM = ForecastListViewModel()
+    //    @AppStorage("isCurrentLocation") var isCurrentLocation: Bool = false
     @EnvironmentObject var forecastListVM: ForecastListViewModel
     @State private var isBottomSheetCurrent: Bool = false
     @State private var isBottomSheetDaily: Bool = false
+    @State private var isBottomSheetHourly: Bool = false
     @State private var showingSheet: Bool = false
     @State private var region = MKCoordinateRegion(
-                    center: CLLocationCoordinate2D(
-                        latitude: 40.83834587046632,
-                        longitude: 14.254053016537693),
-                    span: MKCoordinateSpan(
-                        latitudeDelta: 0.03,
-                        longitudeDelta: 0.03)
-                    )
-//    private let staticData: ForecastViewModel = ForecastViewModel(forecast: Forecast(daily: [Forecast.Daily(temp: Forecast.Daily.Temp(min: 40, max: 80, day: 60), weather: [Forecast.Daily.Weather(id: 400, main: "Clear", icon: "01d")], pop: 0.33, uvi: 0, dt: Date(timeIntervalSince1970: 1660065467), humidity: 40, wind_deg: 40, wind_gust: 10, sunrise: 1660065467, sunset: 1660065467, feels_like: Forecast.Daily.FeelsLike(day: 77))], lat: 40, lon: -74, timezone_offset: -1200, current: Forecast.Current(sunrise: 1660065467, sunset: 1660065467, temp: 40, feels_like: 50, humidity: 33, uvi: 0, wind_speed: 0, wind_deg: 0, weather: [Forecast.Current.Weather(id: 400, main: "Clear", icon: "01d", description: "Clear skies")])), system: 0)
+        center: CLLocationCoordinate2D(
+            latitude: 40.83834587046632,
+            longitude: 14.254053016537693),
+        span: MKCoordinateSpan(
+            latitudeDelta: 0.03,
+            longitudeDelta: 0.03)
+    )
+    //    private let staticData: ForecastViewModel = ForecastViewModel(forecast: Forecast(daily: [Forecast.Daily(temp: Forecast.Daily.Temp(min: 40, max: 80, day: 60), weather: [Forecast.Daily.Weather(id: 400, main: "Clear", icon: "01d")], pop: 0.33, uvi: 0, dt: Date(timeIntervalSince1970: 1660065467), humidity: 40, wind_deg: 40, wind_gust: 10, sunrise: 1660065467, sunset: 1660065467, feels_like: Forecast.Daily.FeelsLike(day: 77))], lat: 40, lon: -74, timezone_offset: -1200, current: Forecast.Current(sunrise: 1660065467, sunset: 1660065467, temp: 40, feels_like: 50, humidity: 33, uvi: 0, wind_speed: 0, wind_deg: 0, weather: [Forecast.Current.Weather(id: 400, main: "Clear", icon: "01d", description: "Clear skies")])), system: 0)
     
     @State private var day: Int = 0
+    @State private var hour: Int = 0
     
     var body: some View {
         ZStack {
@@ -58,40 +59,30 @@ struct HomeView2: View {
                             Text("\(forecastListVM.forecasts?.forecast.lon ?? -1)")
                         }
                     }
-
                     
-
+                    
                     MainWeatherStatusView(Current: forecastListVM.forecasts?.Current ?? ["--", "-- %", "--", " -- mph", "-:-- AM", "-:-- PM", "", "hourglass.bottomhalf.filled"],high: forecastListVM.forecasts?.dailyHigh[0] ?? "--", low: forecastListVM.forecasts?.dailyLow[0] ?? "--" ,isBottomSheet: $isBottomSheetCurrent)
                         .opacity(isAnimating ? 1: 0.3)
                     
-                    HStack(spacing:25) {
-                        ForEach(1...5, id: \.self) { i in
-                            WeatherDayView(dayOfWeek: forecastListVM.forecasts?.Daily[12][i] ?? "--",
-                                            imageName: forecastListVM.forecasts?.Daily[11][i] ?? "hourglass.bottomhalf.filled",
-                                           temperature: forecastListVM.forecasts?.Daily[0][i] ?? "--", pop: forecastListVM.forecasts?.Daily[4][i] ?? "-%", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: i)
+                    SnappingScrollView(.horizontal, decelerationRate: .normal, showsIndicators: false) {
+                        HStack(spacing:25) {
+                            Group {
+                            ForEach(0...4, id:\.self) { i in
+                                WeatherDayView(dayOfWeek: forecastListVM.forecasts?.Hourly[10][i] ?? "--", imageName: forecastListVM.forecasts?.Hourly[7][i] ?? "hourglass.bottomhalf.filled", temperature: forecastListVM.forecasts?.Hourly[0][i] ?? "--°", pop: forecastListVM.forecasts?.Hourly[2][i] ?? "--%", isBottomSheet: $isBottomSheetHourly, dayNum: $hour, pos: i, isDay: false)
+                                
+                                
+                            }
+                            Spacer()
+                            }
+                            ForEach(1...5, id: \.self) { i in
+                                WeatherDayView(dayOfWeek: forecastListVM.forecasts?.Daily[12][i] ?? "--",
+                                               imageName: forecastListVM.forecasts?.Daily[11][i] ?? "hourglass.bottomhalf.filled",
+                                               temperature: forecastListVM.forecasts?.Daily[0][i] ?? "--", pop: forecastListVM.forecasts?.Daily[4][i] ?? "-%", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: i, isDay: true)
+                                
+                            }
                         }
-//
-//                        WeatherDayView(dayOfWeek: forecastListVM.forecasts?.Daily[12][1] ?? "--",
-//                                        imageName: forecastListVM.forecasts?.Daily[11][1] ?? "hourglass.bottomhalf.filled",
-//                                       temperature: forecastListVM.forecasts?.Daily[0][1] ?? "--", pop: forecastListVM.forecasts?.Daily[4][1] ?? "-%", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 1)
-//
-//
-//                        WeatherDayView(dayOfWeek: forecastListVM.forecasts?.Daily[12][2] ?? "--",
-//                                        imageName: forecastListVM.forecasts?.Daily[11][2] ?? "hourglass.bottomhalf.filled",
-//                                       temperature: forecastListVM.forecasts?.Daily[0][2] ?? "--", pop: forecastListVM.forecasts?.Daily[4][2] ?? "-%", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 2)
-//
-//                        WeatherDayView(dayOfWeek:  forecastListVM.forecasts?.Daily[12][3] ?? "--",
-//                                        imageName: forecastListVM.forecasts?.Daily[11][3] ?? "hourglass.bottomhalf.filled",
-//                                       temperature: forecastListVM.forecasts?.Daily[0][3] ?? "--", pop: forecastListVM.forecasts?.Daily[4][3] ?? "-%", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 3)
-//
-//                        WeatherDayView(dayOfWeek:  forecastListVM.forecasts?.Daily[12][4] ?? "--",
-//                                        imageName: forecastListVM.forecasts?.Daily[11][4] ?? "hourglass.bottomhalf.filled",
-//                                       temperature: forecastListVM.forecasts?.Daily[0][4] ?? "--", pop: forecastListVM.forecasts?.Daily[4][4] ?? "-%", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 4)
-//
-//
-//                        WeatherDayView(dayOfWeek:  forecastListVM.forecasts?.Daily[12][5] ?? "--",
-//                                        imageName: forecastListVM.forecasts?.Daily[11][5] ?? "hourglass.bottomhalf.filled",
-//                                       temperature: forecastListVM.forecasts?.Daily[0][5] ?? "--", pop: forecastListVM.forecasts?.Daily[4][5] ?? "-%", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: 5)
+                        .scrollSnappingAnchor(.bounds)
+                        .padding(.horizontal, 35)
                     }
                 }
             }.onAppear(perform: {
@@ -101,10 +92,13 @@ struct HomeView2: View {
                 forecastListVM.fetchData()
             })
             .partialSheet(isPresented: $isBottomSheetCurrent) {
-                halfASheetView(title: "Current", currentData: forecastListVM.forecasts?.Current ?? ["", "", "", "", "", ""])
-                }
+                halfASheetView(currentData: forecastListVM.forecasts?.Current ?? ["", "", "", "", "", ""])
+            }
             .partialSheet(isPresented: $isBottomSheetDaily) {
-                halfASheetView(title: "Daily", dailyData: forecastListVM.forecasts ?? nil, dailyDaily: forecastListVM.forecasts?.Daily, dayNum: day)
+                halfASheetView(dailyData: forecastListVM.forecasts ?? nil, dailyDaily: forecastListVM.forecasts?.Daily, dayNum: day)
+            }
+            .partialSheet(isPresented: $isBottomSheetHourly) {
+                halfASheetView(hourlyHourly: forecastListVM.forecasts?.Hourly ?? nil, hourlyNum: hour)
             }
             
             if forecastListVM.isLoading {
@@ -131,12 +125,14 @@ struct HomeView2: View {
     
     struct WeatherDayView: View {
         var dayOfWeek: String
-        var imageName: String
+        let imageName: String
         var temperature: String
         var pop: String
         @Binding var isBottomSheet: Bool
         @Binding var dayNum: Int
         var pos: Int
+        let isDay: Bool
+        
         var body: some View {
             VStack {
                 Button {
@@ -144,9 +140,15 @@ struct HomeView2: View {
                     dayNum = pos
                 } label: {
                     VStack {
-                        Text(dayOfWeek)
-                            .font(.system(size: 17, weight: .medium))
-                            .foregroundColor(.white)
+                        if isDay {
+                            Text(dayOfWeek == "--" ? dayOfWeek: String(dayOfWeek[dayOfWeek.startIndex..<dayOfWeek.index(dayOfWeek.startIndex, offsetBy: 3)]))
+                                .font(.system(size: 17, weight: .medium))
+                                .foregroundColor(.white)
+                        } else {
+                            Text(dayOfWeek)
+                                .font(.system(size: 17, weight: .medium))
+                                .foregroundColor(.white)
+                        }
                         Image(systemName: imageName)
                             .renderingMode(.original)
                             .resizable()
@@ -173,39 +175,33 @@ struct HomeView2: View {
             var pop: String
             var body: some View {
                 Text(pop)
-                .font(.body)
-                .foregroundColor(.blue)
+                    .font(.body)
+                    .foregroundColor(.blue)
             }
+        }
+    }
+    
+    struct cityTextView: View {
+        var cityName: String
+        
+        var body: some View {
+            Text(cityName)
+                .font(.system(size: 32, weight: .medium, design: .default))
+                .foregroundColor(.white)
+                .shadow(color: Color("ColorBlackTransparentDark"), radius: 8, x: 0, y: 3)
         }
     }
 }
 
-
-struct HomeView2_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView2()
-    }
-}
-
-struct cityTextView: View {
-    var cityName: String
-
-    var body: some View {
-        Text(cityName)
-            .font(.system(size: 32, weight: .medium, design: .default))
-            .foregroundColor(.white)
-            .shadow(color: Color("ColorBlackTransparentDark"), radius: 8, x: 0, y: 3)
-    }
-}
 
 struct MainWeatherStatusView: View {
     var Current: [String]
     var high: String
     var low: String
     @Binding var isBottomSheet: Bool
-
+    
     var body: some View {
-        VStack (spacing:10) {
+        VStack (spacing:7) {
             Button {
                 isBottomSheet.toggle()
             } label: {
@@ -214,19 +210,19 @@ struct MainWeatherStatusView: View {
                         .renderingMode(.original)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 200, height: 140)
+                        .frame(width: 230, height: 160)
                     Text(Current[0])
                         .font(.system(size: 70, weight: .semibold))
                         .foregroundColor(.white)
                         .padding(.top, 15)
                         .padding(.bottom, 10)
-                    HStack(alignment: .center, spacing: 30) {
-                        Text("H: \(high)")
-                            .foregroundColor(.white)
-                        Text("L: \(low)")
-                            .foregroundColor(.white)
-                    }
                 }
+            }
+            HStack(alignment: .center, spacing: 30) {
+                Text("H: \(high)")
+                    .foregroundColor(.white)
+                Text("L: \(low)")
+                    .foregroundColor(.white)
             }
         }
         .padding(.bottom, 80)
@@ -235,21 +231,26 @@ struct MainWeatherStatusView: View {
 }
 
 struct halfASheetView: View {
-    var title: String
     var currentData: [String]?
     var dailyData: ForecastViewModel?
     var dailyDaily: [[String]]?
     var dayNum: Int?
+    var hourlyHourly: [[String]]?
+    var hourlyNum: Int?
     private let icons: [String] = ["thermometer", "humidity.fill", "wind", "sunrise.fill", "sunset.fill", "sun.min.fill"]
     private let dataPoints: [String] = ["Feels Like",  "Humidity", "Wind", "Sunrise", "Sunset", "UV Index"]
     
     private let iconsDaily: [String] = ["thermometer", "thermometer.sun.fill", "thermometer.snowflake", "cloud.drizzle.fill", "humidity.fill", "wind", "sunrise.fill", "sunset.fill", "sun.min.fill"]
     private let dataPointsDaily = ["Feels Like", "High", "Low", "Chance of rain", "Humidity", "Wind", "Sunrise", "Sunset", "UV Index"]
-
+    
+    private let iconsHourly: [String] = ["thermometer", "cloud.drizzle.fill", "humidity.fill", "wind", "sun.min.fill"]
+    private let dataPointsHourly = ["Feels Like", "Chance of rain", "Humidity", "Wind", "UV Index"]
+    
+    
     var body: some View {
         if let currentData = currentData {
             VStack {
-                halfSheetTitleCard(title: "Current", systemImage: currentData[7])
+                halfSheetTitleCard(title: "Current", systemImage: currentData[7], description: currentData[8])
                 VStack(spacing: 20) {
                     ForEach(0..<dataPoints.count, id: \.self) { i in
                         WeatherInfoRows(systemImage: icons[i], property: dataPoints[i], value: currentData[i+1])
@@ -259,12 +260,22 @@ struct halfASheetView: View {
             }
         } else if let dailyData = dailyData, let dayNum = dayNum, let dailyDaily = dailyDaily {
             VStack {
-                let dayName = getFullDay(day: dailyData.date[dayNum])
-                halfSheetTitleCard(title: dayName, systemImage: dailyData.dailySystemImages[dayNum])
+                halfSheetTitleCard(title: dailyData.date[dayNum], systemImage: dailyData.dailySystemImages[dayNum], description: dailyData.dailyDescription[dayNum])
                 
                 VStack(spacing: 20) {
-                    ForEach(0..<dataPointsDaily.count, id: \.self) { i in
+                    ForEach(0..<dataPointsDaily.count-1, id: \.self) { i in
                         WeatherInfoRows(systemImage: iconsDaily[i], property: dataPointsDaily[i], value: dailyDaily[i+1][dayNum])
+                        Divider()
+                    }
+                }
+            }
+        } else if let hourlyHourly = hourlyHourly, let hourlyNum = hourlyNum {
+            VStack {
+                halfSheetTitleCard(title: hourlyHourly[10][hourlyNum], systemImage: hourlyHourly[7][hourlyNum], description: hourlyHourly[8][hourlyNum])
+                
+                VStack(spacing: 20) {
+                    ForEach(0..<dataPointsHourly.count, id: \.self) { i in
+                        WeatherInfoRows(systemImage: iconsHourly[i], property: dataPointsHourly[i], value: hourlyHourly[i+1][hourlyNum])
                         Divider()
                     }
                 }
@@ -273,29 +284,24 @@ struct halfASheetView: View {
             Image(systemName: "sunset.fill")
         }
     }
-            
-    func getFullDay(day: String) -> String {
-        switch day {
-        case "MON": return "MONDAY"
-        case "TUE": return "TUESDAY"
-        case "WED": return "WEDNESDAY"
-        case "THU": return "THURSDAY"
-        case "FRI": return "FRIDAY"
-        case "SAT": return "SATURDAY"
-        case "SUN": return "SUNDAY"
-        default: return "SUNDAY"
-        }
-    }
+    
     struct halfSheetTitleCard: View {
-        var title: String
-        var systemImage: String
+        let title: String
+        let systemImage: String
+        let description: String
         var body: some View {
             HStack {
-                Text(title)
-                    .fontWeight(.bold)
-                    .font(.title)
-                    .scaledToFill()
-                    .padding(.horizontal, 25)
+                VStack(alignment: .center, spacing: 3) {
+                    Text(title)
+                        .fontWeight(.bold)
+                        .font(.title)
+                        .scaledToFill()
+                        .padding(.horizontal, 25)
+                    Text(description)
+                        .fontWeight(.semibold)
+                        .font(.headline)
+                }
+                
                 Spacer()
                 Image(systemName: systemImage)
                     .resizable()
@@ -304,6 +310,7 @@ struct halfASheetView: View {
                     .tint(.primary)
                     .padding(.horizontal, 40)
             }
+            .padding(.horizontal, 6)
         }
     }
 }

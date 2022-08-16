@@ -16,10 +16,16 @@ struct ForecastViewModel: View {
     
     private static var dateFormatter: DateFormatter {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "E"
+        dateFormatter.dateFormat = "EEEE"
         return dateFormatter
     }
     
+    private static var dateFormatter2: DateFormatter {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h a"
+        return dateFormatter
+    }
+//
 //    private static var dateFormatter2: DateFormatter {
 //        let dateFormatter = NSDate()
 //        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
@@ -190,6 +196,14 @@ struct ForecastViewModel: View {
         return myList
     }
     
+    var dailyDescription: [String] {
+        var myList: [String] = []
+        for day in forecast.daily {
+            myList.append(day.weather[0].description.capitalized)
+        }
+        return myList
+    }
+    
     var dailyUV: [String] {
         var myList: [String] = []
         for day in forecast.daily {
@@ -201,7 +215,7 @@ struct ForecastViewModel: View {
     var dailyWind: [String] {
         var myList: [String] = []
         for day in forecast.daily {
-            myList.append("\(Int(day.wind_gust)) mph \(getWindDir(de: day.wind_deg))")
+            myList.append("\(Int(day.wind_speed)) mph \(getWindDir(de: day.wind_deg))")
         }
         return myList
     }
@@ -222,10 +236,106 @@ struct ForecastViewModel: View {
     }
     
     var Daily: [[String]] {
-        return [dailyTemp, dailyFeelsLike, dailyHigh, dailyLow, dailyPop, dailyHumidity, dailyWind, dailySunrise, dailySunset, dailyUV, dailyMain, dailySystemImages, date]
+        return [dailyTemp, dailyFeelsLike, dailyHigh, dailyLow, dailyPop, dailyHumidity, dailyWind, dailySunrise, dailySunset, dailyUV, dailyMain, dailySystemImages, date, dailyDescription]
     }
     
+//    MARK: Hourly
     
+    var hourlyWind: [String] {
+        var myList: [String] = []
+        for hour in forecast.hourly {
+            myList.append("\(Int(hour.wind_speed)) mph \(getWindDir(de: hour.wind_deg))")
+        }
+        return myList
+    }
+    
+    var hourlyTemp: [String] {
+        var myList: [String] = []
+        for hour in forecast.hourly {
+            myList.append("\(Int(convert(Double(hour.temp))))°")
+        }
+        return myList
+    }
+    
+    var hourlyFeelsLike: [String] {
+        var myList: [String] = []
+        for hour in forecast.hourly {
+            myList.append("\(Int(convert(Double(hour.feels_like))))°")
+        }
+        return myList
+    }
+    
+    var hourlySystemImages: [String] {
+        var myList: [String] = []
+        for hour in forecast.hourly {
+            myList.append(getSystemImage(icon: hour.weather[0].icon))
+        }
+        return myList
+    }
+    
+    var hourlyMain: [String] {
+        var myList: [String] = []
+        for hour in forecast.hourly {
+            myList.append(hour.weather[0].main)
+        }
+        return myList
+    }
+    
+    var hourlyDescription: [String] {
+        var myList: [String] = []
+        for hour in forecast.hourly {
+            myList.append(hour.weather[0].description.capitalized)
+        }
+        return myList
+    }
+    
+    var hourlyID: [String] {
+        var myList: [String] = []
+        for hour in forecast.hourly {
+            myList.append("\(hour.weather[0].id)")
+        }
+        return myList
+    }
+    
+    var hourlyHumidity: [String] {
+        var myList: [String] = []
+        for hour in forecast.hourly {
+            myList.append("\(hour.humidity)%")
+        }
+        return myList
+    }
+    
+    var hourlyPop: [String] {
+        var myList: [String] = []
+        for hour in forecast.hourly {
+            myList.append("\(Int(hour.pop))%")
+        }
+        return myList
+    }
+    
+    var hourlyUV: [String] {
+        var myList: [String] = []
+        for hour in forecast.hourly {
+            myList.append("\(Int(hour.uvi))")
+        }
+        return myList
+    }
+    
+    var hourlyTimes: [String] {
+        
+        var myList: [String] = []
+        for hour in forecast.hourly {
+            myList.append("\(Self.dateFormatter2.string(from: hour.dt))")
+        }
+        return myList
+
+    }
+    
+    var Hourly: [[String]] {
+        return [hourlyTemp, hourlyFeelsLike, hourlyPop, hourlyHumidity, hourlyWind, hourlyUV, hourlyMain, hourlySystemImages, hourlyDescription, hourlyID, hourlyTimes]
+    }
+    
+//    MARK: Current
     var currentSunrise: String {
         let date = NSDate(timeIntervalSince1970: TimeInterval(forecast.current.sunrise+forecast.timezone_offset))
         let dayTimePeriodFormatter = DateFormatter()
@@ -262,13 +372,12 @@ struct ForecastViewModel: View {
         return getSystemImage(icon: forecast.current.weather[0].icon)
     }
     
-    var currentWindSpeed: String {
-        return "\(Int(forecast.current.wind_speed))"
+    var currentWind: String {
+        return "\(Int(forecast.current.wind_speed)) mph \(getWindDir(de: forecast.current.wind_deg))"
     }
     
-    
-    var currentWinDir: String {
-        return getWindDir(de: forecast.current.wind_deg)
+    var currentDescription: String {
+        return forecast.current.weather[0].description.capitalized
     }
     
     var currentUv: String {
@@ -276,7 +385,7 @@ struct ForecastViewModel: View {
     }
     
     var Current: [String] {
-        return [currentTemp, currentFeelsLikeTemp, currentHumidity, currentWindSpeed + " " + currentWinDir, currentSunrise, currentSunset, currentUv, currentSystemImage]
+        return [currentTemp, currentFeelsLikeTemp, currentHumidity, currentWind, currentSunrise, currentSunset, currentUv, currentSystemImage, currentDescription]
     }
     
 //    var cityName: String {
