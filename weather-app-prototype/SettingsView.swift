@@ -10,13 +10,13 @@ import SwiftUI
 struct SettingsView: View {
     @AppStorage("isOnboarding") var isOnboarding: Bool = false
     @AppStorage("isForceDarkMode") var isforceDarkMode: Bool = false
-    @StateObject var forecastListVM = ForecastListViewModel()
+    @EnvironmentObject var forecastListVM: ForecastListViewModel
     
     var body: some View {
         NavigationView {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing:20) {
-//                    section 1
+                    //                    section 1
                     GroupBox(label:
                                 SettingsLabelView(labelText: "About Weather +", labelImage: "info.circle") ) {
                         Divider().padding(.vertical, 4)
@@ -29,10 +29,8 @@ struct SettingsView: View {
                             Text("Most weather apps are bloated and battery drainers. They track and sell your data. We don't. Weather + offers a clean experience for the same accurate results.")
                                 .font(.footnote)
                         }
-                                
-                        
-                            }
-//                    section 2
+                    }
+                    //                    section 2
                     GroupBox(
                         label: SettingsLabelView(labelText: "Customization", labelImage: "paintbrush")) {
                             Divider().padding(.vertical, 4)
@@ -73,14 +71,14 @@ struct SettingsView: View {
                                         Text("°F").tag(1)
                                         Text("°C").tag(0)
                                     }, label: {
-                                }).pickerStyle(SegmentedPickerStyle())
+                                    }).pickerStyle(SegmentedPickerStyle())
                                     .frame(width: 110)
                                     .cornerRadius(8)
                                     .shadow(color: .gray.opacity(0.3), radius: 6, x: 0, y: 6)
                             }.padding(.top, 6)
                         }
                     
-//                    section 3
+                    //                    section 3
                     GroupBox(
                         label: SettingsLabelView(labelText: "Application", labelImage: "apps.iphone")) {
                             
