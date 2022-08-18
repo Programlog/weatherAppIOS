@@ -29,63 +29,60 @@ struct HomeView2: View {
             LinearGradient(gradient: Gradient(colors: forecastListVM.forecasts?.backgroundColors ?? [.gray, Color("CloudyBackground")]), startPoint: .topLeading, endPoint: .bottomTrailing)
                 .edgesIgnoringSafeArea(.all)
             
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack {
-                    Button {
-                        print(String(describing: region))
-                        self.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: forecastListVM.forecasts?.forecast.lat ?? 40.741895, longitude: forecastListVM.forecasts?.forecast.lon ?? -73.989308), span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03))
-                        showingSheet.toggle()
-                    } label: {
-                        cityTextView(cityName: forecastListVM.location )
-                            .opacity(isAnimating ? 1: 0.3)
-                            .offset(y:isAnimating ? 0 : -15)
-                            .animation(.easeInOut(duration: 0.7), value: isAnimating)
-                    }
-                    .sheet(isPresented: $showingSheet) {
-                        VStack {
-                            HStack {
-                                Spacer()
-                                Button {
-                                    showingSheet.toggle()
-                                } label: {
-                                    Text("Done")
-                                        .padding(15)
-                                }
-                                
-                            }
-                            Map(coordinateRegion: self.$region)
-                                .edgesIgnoringSafeArea(.top)
-                            Text("\(forecastListVM.forecasts?.forecast.lat ?? -1)")
-                            Text("\(forecastListVM.forecasts?.forecast.lon ?? -1)")
-                        }
-                    }
-                    
-                    
-                    MainWeatherStatusView(Current: forecastListVM.forecasts?.Current ?? ["--", "-- %", "--", " -- mph", "-:-- AM", "-:-- PM", "", "hourglass.bottomhalf.filled"],high: forecastListVM.forecasts?.dailyHigh[0] ?? "--", low: forecastListVM.forecasts?.dailyLow[0] ?? "--" ,isBottomSheet: $isBottomSheetCurrent)
+            VStack {
+                Button {
+                    print(String(describing: region))
+                    self.region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: forecastListVM.forecasts?.forecast.lat ?? 40.741895, longitude: forecastListVM.forecasts?.forecast.lon ?? -73.989308), span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03))
+                    showingSheet.toggle()
+                } label: {
+                    cityTextView(cityName: forecastListVM.location )
                         .opacity(isAnimating ? 1: 0.3)
-                    
-                    SnappingScrollView(.horizontal, decelerationRate: .normal, showsIndicators: false) {
-                        HStack(spacing:25) {
-                            Group {
+                        .offset(y:isAnimating ? 0 : -15)
+                        .animation(.easeInOut(duration: 0.7), value: isAnimating)
+                }
+                .sheet(isPresented: $showingSheet) {
+                    VStack {
+                        HStack {
+                            Spacer()
+                            Button {
+                                showingSheet.toggle()
+                            } label: {
+                                Text("Done")
+                                    .padding(15)
+                            }
+                            
+                        }
+                        Map(coordinateRegion: self.$region)
+                            .edgesIgnoringSafeArea(.top)
+                        Text("\(forecastListVM.forecasts?.forecast.lat ?? -1)")
+                        Text("\(forecastListVM.forecasts?.forecast.lon ?? -1)")
+                    }
+                }
+                
+                MainWeatherStatusView(Current: forecastListVM.forecasts?.Current ?? ["--", "-- %", "--", " -- mph", "-:-- AM", "-:-- PM", "", "hourglass.bottomhalf.filled"],high: forecastListVM.forecasts?.dailyHigh[0] ?? "--", low: forecastListVM.forecasts?.dailyLow[0] ?? "--" ,isBottomSheet: $isBottomSheetCurrent)
+                    .opacity(isAnimating ? 1: 0.3)
+                
+                SnappingScrollView(.horizontal, decelerationRate: .normal, showsIndicators: false) {
+                    HStack(spacing:25) {
+                        Group {
                             ForEach(0...4, id:\.self) { i in
                                 WeatherDayView(dayOfWeek: forecastListVM.forecasts?.Hourly[10][i] ?? "--", imageName: forecastListVM.forecasts?.Hourly[7][i] ?? "hourglass.bottomhalf.filled", temperature: forecastListVM.forecasts?.Hourly[0][i] ?? "--°", pop: forecastListVM.forecasts?.Hourly[2][i] ?? "--%", isBottomSheet: $isBottomSheetHourly, dayNum: $hour, pos: i, isDay: false)
                                 
                                 
                             }
                             Spacer()
-                            }
-                            ForEach(1...5, id: \.self) { i in
-                                WeatherDayView(dayOfWeek: forecastListVM.forecasts?.Daily[12][i] ?? "--",
-                                               imageName: forecastListVM.forecasts?.Daily[11][i] ?? "hourglass.bottomhalf.filled",
-                                               temperature: forecastListVM.forecasts?.Daily[0][i] ?? "--", pop: forecastListVM.forecasts?.Daily[4][i] ?? "-%", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: i, isDay: true)
-                                
-                            }
                         }
-                        .scrollSnappingAnchor(.bounds)
-                        .padding(.horizontal, 35)
+                        ForEach(1...5, id: \.self) { i in
+                            WeatherDayView(dayOfWeek: forecastListVM.forecasts?.Daily[12][i] ?? "--",
+                                           imageName: forecastListVM.forecasts?.Daily[11][i] ?? "hourglass.bottomhalf.filled",
+                                           temperature: forecastListVM.forecasts?.Daily[0][i] ?? "--", pop: forecastListVM.forecasts?.Daily[4][i] ?? "-%", isBottomSheet: $isBottomSheetDaily, dayNum: $day, pos: i, isDay: true)
+                        }
                     }
+                    .scrollSnappingAnchor(.bounds)
+                    .padding(.horizontal, 35)
                 }
-            }.onAppear(perform: {
+            }
+            .onAppear(perform: {
                 isAnimating = true
             })
             .onChange(of: forecastListVM.system, perform: { _ in
@@ -113,14 +110,15 @@ struct HomeView2: View {
                 }
             }
             
-        }.attachPartialSheetToRoot()
-            .alert(item: $forecastListVM.appError) { appAlert in
-                Alert(title: Text("Error"),
-                      message: Text("""
-                                    \(appAlert.errorString)
-                                    Please try again later.
-                                    """))
-            }
+        }
+        .attachPartialSheetToRoot()
+        .alert(item: $forecastListVM.appError) { appAlert in
+            Alert(title: Text("Error"),
+                    message: Text("""
+                                \(appAlert.errorString)
+                                Please try again later.
+                                """))
+        }
     }
     
     struct WeatherDayView: View {
